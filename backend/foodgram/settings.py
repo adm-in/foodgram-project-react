@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'apps.recipes.apps.RecipesConfig',
     'apps.users.apps.UsersConfig',
     'rest_framework',
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [

@@ -22,22 +22,29 @@ class Tag(models.Model):
 
 
 class Recipe(models.Model):
+    tags = models.ManyToManyField(Tag, related_name='tags', through='TagRecipe')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=256)
-    description = models.TextField()
-    cooking_time = models.IntegerField()
-    ingredients = models.ManyToManyField(Ingredient,
+    ingredients = models.ManyToManyField(Ingredient, related_name='ingredient',
                                          through='IngredientRecipe')
-    tag = models.ManyToManyField(Tag, through='TagRecipe')
+    is_favorited = models.BooleanField()
+    is_in_shopping_cart = models.BooleanField()
+    name = models.CharField(max_length=256)
+    image = models.ImageField(
+        upload_to='apps/recipes/images/',
+        blank=True,
+        null=True
+    )
+    text = models.TextField()
+    cooking_time = models.IntegerField()
 
     def __str__(self):
-        return self.title
+        return self.name
 
 
 class IngredientRecipe(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    value = models.IntegerField()
+    amount = models.CharField(max_length=64)
 
 
 class TagRecipe(models.Model):
