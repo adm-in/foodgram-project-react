@@ -1,15 +1,15 @@
-from django.db import models
 from django.contrib.auth import get_user_model
+from django.db import models
 
 User = get_user_model()
 
 
 class Ingredient(models.Model):
     name = models.CharField(max_length=256)
-    unit = models.CharField(max_length=64)
+    measurement_unit = models.CharField(max_length=64)
 
     def __str__(self):
-        return '{}, {}'.format(self.name, self.unit)
+        return '{}, {}'.format(self.name, self.measurement_unit)
 
 
 class Tag(models.Model):
@@ -22,17 +22,16 @@ class Tag(models.Model):
 
 
 class Recipe(models.Model):
-    tags = models.ManyToManyField(Tag, related_name='tags', through='TagRecipe')
+    tags = models.ManyToManyField(Tag, through='TagRecipe')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    ingredients = models.ManyToManyField(Ingredient, related_name='ingredient',
-                                         through='IngredientRecipe')
+    ingredients = models.ManyToManyField(
+        Ingredient, through='IngredientRecipe'
+    )
     is_favorited = models.BooleanField()
     is_in_shopping_cart = models.BooleanField()
     name = models.CharField(max_length=256)
     image = models.ImageField(
-        upload_to='apps/recipes/images/',
-        blank=True,
-        null=True
+        upload_to='apps/recipes/images/', blank=True, null=True
     )
     text = models.TextField()
     cooking_time = models.IntegerField()
@@ -43,7 +42,9 @@ class Recipe(models.Model):
 
 class IngredientRecipe(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(
+        Recipe, related_name='recipe_ingredients', on_delete=models.CASCADE
+    )
     amount = models.CharField(max_length=64)
 
 
