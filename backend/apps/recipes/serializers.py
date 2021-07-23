@@ -48,6 +48,8 @@ class RecipeSerializer(serializers.ModelSerializer):
         model = Recipe
         fields = (
             'id',
+            'is_favorited',
+            'is_in_shopping_cart',
             'name',
             'author',
             'image',
