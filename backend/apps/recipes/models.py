@@ -13,9 +13,9 @@ class Ingredient(models.Model):
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=7, unique=True)
-    color = models.CharField(max_length=7, unique=True)
-    slug = models.SlugField(unique=True)
+    name = models.CharField(max_length=7, unique=True, blank=True)
+    color = models.CharField(max_length=7, unique=True, blank=True)
+    slug = models.SlugField(unique=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -27,8 +27,8 @@ class Recipe(models.Model):
     ingredients = models.ManyToManyField(
         Ingredient, through='IngredientRecipe'
     )
-    is_favorited = models.BooleanField()
-    is_in_shopping_cart = models.BooleanField()
+    is_favorited = models.BooleanField(blank=True)
+    is_in_shopping_cart = models.BooleanField(blank=True)
     name = models.CharField(max_length=256)
     image = models.ImageField(
         upload_to='apps/recipes/images/', blank=True, null=True
