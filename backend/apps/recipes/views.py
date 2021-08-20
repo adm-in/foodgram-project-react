@@ -1,13 +1,18 @@
 from rest_framework import viewsets
 
 from .models import IngredientRecipe, Recipe, Tag
-from .serializers import (IngredientRecipeSerializer, RecipeSerializer,
-                          TagSerializer)
+from .serializers import (GetRecipeSerializer, IngredientRecipeSerializer,
+                          PostRecipeSerializer, TagSerializer)
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
-    serializer_class = RecipeSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return GetRecipeSerializer
+        if self.request.method == 'POST':
+            return PostRecipeSerializer
 
 
 class TagViewSet(viewsets.ModelViewSet):

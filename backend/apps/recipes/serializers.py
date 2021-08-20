@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import IngredientRecipe, Recipe, Tag, TagRecipe
+from .models import IngredientRecipe, Recipe, Tag, TagRecipe, Ingredient
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -38,13 +38,8 @@ class IngredientRecipeSerializer(serializers.ModelSerializer):
         return obj.ingredient.measurement_unit
 
 
-class RecipeSerializer(serializers.ModelSerializer):
+class GetRecipeSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
-    #tags = serializers.PrimaryKeyRelatedField(
-        # many=True,
-        # queryset=Tag.objects.all(),
-         #read_only=True
-     #)
     ingredients = IngredientRecipeSerializer(
         many=True, source='recipe_ingredients'
     )
@@ -64,3 +59,31 @@ class RecipeSerializer(serializers.ModelSerializer):
             'cooking_time',
         )
 
+
+class PostRecipeSerializer(serializers.ModelSerializer):
+    tags = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Tag.objects.all(),
+    )
+    ingredients = IngredientRecipeSerializer(
+        many=True, source='recipe_ingredients'
+    )
+
+    class Meta:
+        model = Recipe
+        fields = (
+            'id',
+            'is_favorited',
+            'is_in_shopping_cart',
+            'name',
+            'author',
+            'image',
+            'text',
+            'ingredients',
+            'tags',
+            'cooking_time',
+        )
+
+    def create(self, validated_data):
+        ingredients = validated_data.pop('ingredients')
+        return Recipe.objects.create(**validated_data)
