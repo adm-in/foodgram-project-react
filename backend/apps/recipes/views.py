@@ -1,8 +1,9 @@
 from rest_framework import viewsets
 
 from .models import IngredientRecipe, Recipe, Tag
-from .serializers import (GetRecipeSerializer, IngredientRecipeSerializer,
-                          PostRecipeSerializer, TagSerializer)
+from .serializers import (GetIngredientRecipeSerializer, GetRecipeSerializer,
+                          PostIngredientRecipeSerializer, PostRecipeSerializer,
+                          TagSerializer)
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -22,4 +23,9 @@ class TagViewSet(viewsets.ModelViewSet):
 
 class IngredientRecipeViewSet(viewsets.ModelViewSet):
     queryset = IngredientRecipe.objects.all()
-    serializer_class = IngredientRecipeSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return GetIngredientRecipeSerializer
+        if self.request.method == 'POST':
+            return PostIngredientRecipeSerializer

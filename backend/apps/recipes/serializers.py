@@ -14,7 +14,16 @@ class TagSerializer(serializers.ModelSerializer):
         )
 
 
-class IngredientRecipeSerializer(serializers.ModelSerializer):
+class PostIngredientRecipeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = IngredientRecipe
+        fields = (
+            'id',
+            'amount',
+        )
+
+
+class GetIngredientRecipeSerializer(serializers.ModelSerializer):
     id = serializers.SerializerMethodField()
     name = serializers.SerializerMethodField()
     measurement_unit = serializers.SerializerMethodField()
@@ -40,7 +49,7 @@ class IngredientRecipeSerializer(serializers.ModelSerializer):
 
 class GetRecipeSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
-    ingredients = IngredientRecipeSerializer(
+    ingredients = GetIngredientRecipeSerializer(
         many=True, source='recipe_ingredients'
     )
 
@@ -65,7 +74,7 @@ class PostRecipeSerializer(serializers.ModelSerializer):
         many=True,
         queryset=Tag.objects.all(),
     )
-    ingredients = IngredientRecipeSerializer(
+    ingredients = PostIngredientRecipeSerializer(
         many=True, source='recipe_ingredients'
     )
 
@@ -73,11 +82,8 @@ class PostRecipeSerializer(serializers.ModelSerializer):
         model = Recipe
         fields = (
             'id',
-            'is_favorited',
-            'is_in_shopping_cart',
             'name',
             'author',
-            'image',
             'text',
             'ingredients',
             'tags',
