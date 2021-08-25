@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import IngredientRecipe, Recipe, Tag, TagRecipe, Ingredient
+from .models import Ingredient, IngredientRecipe, Recipe, Tag, TagRecipe
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -73,10 +73,9 @@ class GetRecipeSerializer(serializers.ModelSerializer):
 
 class PostRecipeSerializer(serializers.ModelSerializer):
     tags = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=Tag.objects.all(),
+        many=True, queryset=Tag.objects.all(),
     )
-    ingredients = PostIngredientRecipeSerializer(many=True, )
+    ingredients = PostIngredientRecipeSerializer(many=True,)
 
     class Meta:
         model = Recipe
@@ -91,6 +90,22 @@ class PostRecipeSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
+        print('! TEST PRINT !')
         ingredients = validated_data.pop('ingredients')
         tags = validated_data.pop('tags')
-        return Recipe.objects.create(**validated_data)
+        recipe = Recipe.objects.create(**validated_data)
+        recipe.tags.set(tags)
+        for ingredient in ingredients:
+            current_ingredient, ingredient_amount = ingredient
+            print('INGREDIENTS ID =', ingredient[current_ingredient]['id'])
+            print('INGREDIENTS AMOUNT =', ingredient[ingredient_amount])
+            ingredient_id = ingredient[current_ingredient]['id']
+            ingredient_amount = ingredient[ingredient_amount]
+            get_ingredient = Ingredient.objects.get(id=ingredient_id)
+            print('GET INGREDIENT', get_ingredient)
+            IngredientRecipe.objects.create(
+                ingredient=get_ingredient,
+                amount=ingredient_amount,
+                recipe=recipe,
+            )
+        return recipe
