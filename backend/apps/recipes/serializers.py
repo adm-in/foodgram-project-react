@@ -99,6 +99,7 @@ class PostRecipeSerializer(serializers.ModelSerializer):
             current_ingredient, ingredient_amount = ingredient
             print('INGREDIENTS ID =', ingredient[current_ingredient]['id'])
             print('INGREDIENTS AMOUNT =', ingredient[ingredient_amount])
+            print('CURRENT INGREDIENT =', current_ingredient)
             ingredient_id = ingredient[current_ingredient]['id']
             ingredient_amount = ingredient[ingredient_amount]
             get_ingredient = Ingredient.objects.get(id=ingredient_id)
