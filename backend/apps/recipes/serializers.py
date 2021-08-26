@@ -15,7 +15,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class PostIngredientRecipeSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(source='ingredient.id')
+    id = serializers.IntegerField(source='ingredient.id',)
 
     class Meta:
         model = IngredientRecipe
@@ -90,23 +90,28 @@ class PostRecipeSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        print('! TEST PRINT !')
         ingredients = validated_data.pop('ingredients')
         tags = validated_data.pop('tags')
+
         recipe = Recipe.objects.create(**validated_data)
         recipe.tags.set(tags)
+
         for ingredient in ingredients:
             current_ingredient, ingredient_amount = ingredient
-            print('INGREDIENTS ID =', ingredient[current_ingredient]['id'])
-            print('INGREDIENTS AMOUNT =', ingredient[ingredient_amount])
-            print('CURRENT INGREDIENT =', current_ingredient)
             ingredient_id = ingredient[current_ingredient]['id']
             ingredient_amount = ingredient[ingredient_amount]
             get_ingredient = Ingredient.objects.get(id=ingredient_id)
-            print('GET INGREDIENT', get_ingredient)
             IngredientRecipe.objects.create(
                 ingredient=get_ingredient,
                 amount=ingredient_amount,
                 recipe=recipe,
             )
         return recipe
+
+    def to_representation(self, instance):
+        return GetRecipeSerializer(
+            instance,
+            context={
+                'request': self.context.get('request')
+            }
+        ).data
