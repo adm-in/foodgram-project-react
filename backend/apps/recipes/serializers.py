@@ -1,6 +1,17 @@
 from rest_framework import serializers
 
-from .models import Ingredient, IngredientRecipe, Recipe, Tag, TagRecipe
+from .models import Ingredient, IngredientRecipe, Recipe, Tag, TagRecipe, \
+    Ingredient
+
+
+class IngredientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ingredient
+        fields = (
+            'id',
+            'name',
+            'measurement_unit',
+        )
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -115,7 +126,8 @@ class PostRecipeSerializer(serializers.ModelSerializer):
 
         instance.name = validated_data.get('name', instance.name)
         instance.text = validated_data.get('text', instance.text)
-        instance.cooking_time = validated_data.get('cooking_time', instance.cooking_time)
+        instance.cooking_time = validated_data.get('cooking_time',
+                                                   instance.cooking_time)
 
         IngredientRecipe.objects.filter(recipe=instance).delete()
         for ingredient in ingredients:
