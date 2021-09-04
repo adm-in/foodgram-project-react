@@ -60,13 +60,15 @@ WSGI_APPLICATION = 'foodgram.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'foodgram',
+        'NAME': 'foodgram_db',
         'USER': 'admin',
         'PASSWORD': 'admin',
         'HOST': 'localhost',
         'PORT': '',#5432
     }
 }
+
+AUTH_USER_MODEL = 'users.CustomUser'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
