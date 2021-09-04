@@ -54,3 +54,8 @@ class TagRecipe(models.Model):
 
     def __str__(self):
         return f'{self.tag} {self.recipe}'
+
+
+#class Favorite(models.Model):
+#class Subscribe(models.Model):
+#class Purchase(models.Model):
