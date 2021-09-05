@@ -17,7 +17,7 @@ router_v1.register(
     basename='favorite',
 )
 router_v1.register(
-    r'recipes/download_shopping_cart/',
+    r'recipes/(?P<recipes_id>\d+)/download_shopping_cart/',
     views.PurchaseViewSet,
     basename='purchase',
 )
