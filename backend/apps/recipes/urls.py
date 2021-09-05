@@ -11,6 +11,7 @@ router_v1.register(r'recipes', views.RecipeViewSet, basename='recipes')
 router_v1.register(
     r'ingredients', views.IngredientViewSet, basename='ingredients'
 )
+router_v1.register(r'recipes', views.RecipeViewSet, basename='recipes')
 
 urlpatterns = [
     path('', include(router_v1.urls)),

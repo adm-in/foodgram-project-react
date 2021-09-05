@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from .models import Ingredient, IngredientRecipe, Recipe, Tag, TagRecipe, \
-    Ingredient
+    Ingredient, Favorite, Purchase
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -150,3 +150,25 @@ class PostRecipeSerializer(serializers.ModelSerializer):
                 'request': self.context.get('request')
             }
         ).data
+
+
+class FavoriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Favorite
+        fields = (
+            'id',
+            'name',
+            'image',
+            'cooking_time',
+        )
+
+
+class PurchaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Purchase
+        fields = (
+            'id',
+            'name',
+            'image',
+            'cooking_time',
+        )
