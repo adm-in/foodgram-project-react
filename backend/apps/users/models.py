@@ -12,8 +12,8 @@ class CustomUser(AbstractUser):
     username = models.CharField(
         verbose_name='Логин', max_length=150, unique=True,
     )
-    first_name = models.CharField(verbose_name='Имя', max_length=150, )
-    last_name = models.CharField(verbose_name='Фамилия', max_length=150, )
+    first_name = models.CharField(verbose_name='Имя', max_length=150,)
+    last_name = models.CharField(verbose_name='Фамилия', max_length=150,)
 
     class Meta:
         verbose_name = 'Пользователь'
@@ -21,4 +21,28 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
 
-# class Subscribe(models.Model):
+
+class Subscribe(models.Model):
+    user = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name='user',
+        verbose_name='Пользователь',
+    )
+    author = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name='author',
+        verbose_name='Автор',
+    )
+
+    class Meta:
+        verbose_name = 'Подписка'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'author'], name='unique_follow'
+            )
+        ]
+
+    def __str__(self):
+        return f'{self.user} => {self.author}'
