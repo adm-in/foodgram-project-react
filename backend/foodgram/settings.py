@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'apps.recipes.apps.RecipesConfig',
     'apps.users.apps.UsersConfig',
     'rest_framework',
+    'rest_framework.authtoken',
     'djoser',
     'sorl.thumbnail',
 ]
@@ -91,15 +92,13 @@ REST_FRAMEWORK = {
     ],
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ],
+        'rest_framework.authentication.TokenAuthentication',
+    ]
 }
 
 
-SIMPLE_JWT = {
-    # Устанавливаем срок жизни токена
-   'ACCESS_TOKEN_LIFETIME': timedelta(days=999),
-   'AUTH_HEADER_TYPES': ('Bearer',),
+DJOSER = {
+    'LOGIN_FIELD': 'email',
 }
 
 LANGUAGE_CODE = 'en-us'

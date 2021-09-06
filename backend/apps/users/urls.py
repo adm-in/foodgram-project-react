@@ -7,8 +7,9 @@ app_name = 'users'
 
 router_v1 = DefaultRouter()
 
-router_v1.register(r'users', views.CustomUserViewSet, basename='users')
+router_v1.register(r'auth/users', views.CustomUserViewSet, basename='users')
 
 urlpatterns = [
     path('', include(router_v1.urls)),
+    path('auth/', include('djoser.urls.authtoken')),
 ]
