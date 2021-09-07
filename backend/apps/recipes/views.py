@@ -1,5 +1,7 @@
 from rest_framework import viewsets
 
+from .permissions import IsAuthorOrReadOnly
+
 from .models import IngredientRecipe, Recipe, Tag, Ingredient, Favorite, \
     Purchase
 from .serializers import (GetIngredientRecipeSerializer, GetRecipeSerializer,
@@ -10,6 +12,7 @@ from .serializers import (GetIngredientRecipeSerializer, GetRecipeSerializer,
 
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
+    permission_classes = [IsAuthorOrReadOnly]
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
