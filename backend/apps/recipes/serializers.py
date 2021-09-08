@@ -155,12 +155,11 @@ class PostRecipeSerializer(serializers.ModelSerializer):
 class FavoriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Favorite
-        fields = (
-            'id',
-            'name',
-            'image',
-            'cooking_time',
-        )
+        fields = '__all__'
+
+    def validata(self, data):
+        print('test')
+        print(data)
 
 
 class PurchaseSerializer(serializers.ModelSerializer):

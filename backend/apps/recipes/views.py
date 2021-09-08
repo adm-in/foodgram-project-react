@@ -12,7 +12,7 @@ from .serializers import (GetIngredientRecipeSerializer, GetRecipeSerializer,
 
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
-    permission_classes = [IsAuthorOrReadOnly]
+   # permission_classes = [IsAuthorOrReadOnly]
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
