@@ -153,13 +153,22 @@ class PostRecipeSerializer(serializers.ModelSerializer):
 
 
 class FavoriteSerializer(serializers.ModelSerializer):
+    id = serializers.SerializerMethodField()
+    name = serializers.SerializerMethodField()
+    cooking_time = serializers.SerializerMethodField()
+
     class Meta:
         model = Favorite
         fields = '__all__'
 
-    def validata(self, data):
-        print('test')
-        print(data)
+    def get_id(self, obj):
+        return obj.recipe.id
+
+    def get_name(self, obj):
+        return obj.recipe.name
+
+    def get_cooking_time(self, obj):
+        return obj.recipe.cooking_time
 
 
 class PurchaseSerializer(serializers.ModelSerializer):
