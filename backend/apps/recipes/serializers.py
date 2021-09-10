@@ -152,23 +152,31 @@ class PostRecipeSerializer(serializers.ModelSerializer):
         ).data
 
 
+class FavoriteRecipeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Recipe
+        fields = (
+            'id',
+            'name',
+            'image',
+            'cooking_time',
+        )
+
+
 class FavoriteSerializer(serializers.ModelSerializer):
-    id = serializers.SerializerMethodField()
-    name = serializers.SerializerMethodField()
-    cooking_time = serializers.SerializerMethodField()
+    name = FavoriteRecipeSerializer()
+    #test = serializers.SerializerMethodField()
+    print(name)
 
     class Meta:
         model = Favorite
-        fields = '__all__'
-
-    def get_id(self, obj):
-        return obj.recipe.id
-
-    def get_name(self, obj):
-        return obj.recipe.name
-
-    def get_cooking_time(self, obj):
-        return obj.recipe.cooking_time
+        fields = (
+            'id',
+            'name',
+            'image',
+            'cooking_time',
+            'test',
+        )
 
 
 class PurchaseSerializer(serializers.ModelSerializer):
