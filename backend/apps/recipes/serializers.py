@@ -164,18 +164,13 @@ class FavoriteRecipeSerializer(serializers.ModelSerializer):
 
 
 class FavoriteSerializer(serializers.ModelSerializer):
-    name = FavoriteRecipeSerializer()
-    #test = serializers.SerializerMethodField()
-    print(name)
-
     class Meta:
-        model = Favorite
+        model = Recipe
         fields = (
             'id',
             'name',
             'image',
             'cooking_time',
-            'test',
         )
 
 
