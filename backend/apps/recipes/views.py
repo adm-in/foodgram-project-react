@@ -1,3 +1,4 @@
+from rest_framework import status
 from requests import Response
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -18,17 +19,18 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     # permission_classes = [IsAuthorOrReadOnly]
 
-    @action(detail=True, url_path='favorite', methods=['get'])
+    @action(detail=True, serializer_class=FavoriteSerializer)
     def favorite(self, request, pk):
-        obj = self.get_object()
-        return Response({'tags': obj.tags, 'name': obj.name})
+        recipe = self.get_object()
+        print('RECIPE ', recipe)
+        serializer = self.get_serializer_class()
+        print(serializer)
+        return Response(serializer.data)
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
-            print('THIS GET')
             return GetRecipeSerializer
         if self.request.method == 'POST' or self.request.method == 'PUT':
-            print('THIS POST')
             return PostRecipeSerializer
 
 

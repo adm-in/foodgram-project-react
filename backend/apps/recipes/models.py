@@ -35,7 +35,7 @@ class Recipe(models.Model):
     cooking_time = models.IntegerField()
 
     def __str__(self):
-        return self.name
+        return f'{self.name}'
 
 
 class IngredientRecipe(models.Model):
@@ -44,6 +44,9 @@ class IngredientRecipe(models.Model):
         Recipe, related_name='recipe_ingredients', on_delete=models.CASCADE
     )
     amount = models.CharField(max_length=64)
+
+    def __str__(self):
+        return f'{self.ingredient} {self.recipe}'
 
 
 class TagRecipe(models.Model):
