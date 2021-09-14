@@ -1,7 +1,7 @@
 from rest_framework import status
 from requests import Response
 from rest_framework import viewsets
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view
 from rest_framework.generics import get_object_or_404
 
 from .permissions import IsAuthorOrReadOnly
@@ -18,14 +18,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
 
     # permission_classes = [IsAuthorOrReadOnly]
-
-    @action(detail=True, serializer_class=FavoriteSerializer)
-    def favorite(self, request, pk):
-        recipe = self.get_object()
-        print('RECIPE ', recipe)
-        serializer = self.get_serializer_class()
-        print(serializer)
-        return Response(serializer.data)
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -52,6 +44,17 @@ class IngredientViewSet(viewsets.ModelViewSet):
 class FavoriteViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = FavoriteSerializer
+
+
+@api_view(['GET'])
+def favorite(request, pk):
+    print('REQUEST', request)
+    recipe = Recipe.objects.get(id=pk)
+    print('RECIPE', recipe)
+    serializer = FavoriteSerializer()
+    print('SERIALIZER', serializer)
+    print('SERIALIZER_DATA', serializer.data)
+    return Response(serializer.data)
 
 
 class PurchaseViewSet(viewsets.ModelViewSet):

@@ -153,6 +153,10 @@ class PostRecipeSerializer(serializers.ModelSerializer):
 
 
 class FavoriteRecipeSerializer(serializers.ModelSerializer):
+    print('WORK IT')
+    ingredients = GetIngredientRecipeSerializer(
+        many=True, source='recipe_ingredients'
+    )
     class Meta:
         model = Recipe
         fields = (
@@ -165,7 +169,7 @@ class FavoriteRecipeSerializer(serializers.ModelSerializer):
 
 class FavoriteSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Favorite
+        model = Recipe
         fields = (
             'id',
             'name',

@@ -15,4 +15,5 @@ router_v1.register(
 
 urlpatterns = [
     path('', include(router_v1.urls)),
+    path('recipes/<int:pk>/favorite/', views.favorite),
 ]
