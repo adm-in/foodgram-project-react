@@ -1,5 +1,5 @@
 from rest_framework import status
-from requests import Response
+from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.decorators import action, api_view
 from rest_framework.generics import get_object_or_404
@@ -41,20 +41,25 @@ class IngredientViewSet(viewsets.ModelViewSet):
     serializer_class = IngredientSerializer
 
 
-class FavoriteViewSet(viewsets.ModelViewSet):
-    queryset = Recipe.objects.all()
-    serializer_class = FavoriteSerializer
-
-
-@api_view(['GET'])
+@api_view(['GET', 'DELETE'])
 def favorite(request, pk):
-    print('REQUEST', request)
-    recipe = Recipe.objects.get(id=pk)
-    print('RECIPE', recipe)
-    serializer = FavoriteSerializer()
-    print('SERIALIZER', serializer)
-    print('SERIALIZER_DATA', serializer.data)
-    return Response(serializer.data)
+    if request.method == 'GET':
+        qs = Recipe.objects.all()
+        recipe = get_object_or_404(qs, id=pk)
+        serializer = FavoriteSerializer(recipe)
+        user = request.user
+        author = recipe.author
+        if user != author:
+            Favorite.objects.create(author_id=recipe.author.id, recipe_id=pk)
+            serializer.save()
+        print('user', user)
+        print('user', author)
+        return Response(serializer.data)
+    if request.method == 'DELETE':
+        favorite_qs = Favorite.objects.all()
+        favorite_recipe = get_object_or_404(favorite_qs, id=pk)
+        favorite_recipe.delete()
+        return Response(status=status.HTTP_200_OK)
 
 
 class PurchaseViewSet(viewsets.ModelViewSet):

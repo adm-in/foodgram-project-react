@@ -153,7 +153,6 @@ class PostRecipeSerializer(serializers.ModelSerializer):
 
 
 class FavoriteRecipeSerializer(serializers.ModelSerializer):
-    print('WORK IT')
     ingredients = GetIngredientRecipeSerializer(
         many=True, source='recipe_ingredients'
     )
@@ -176,6 +175,10 @@ class FavoriteSerializer(serializers.ModelSerializer):
             'image',
             'cooking_time',
         )
+
+    def create(self, validated_data):
+        print('update', validated_data)
+        return validated_data
 
 
 class PurchaseSerializer(serializers.ModelSerializer):
