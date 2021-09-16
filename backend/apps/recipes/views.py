@@ -3,7 +3,8 @@ from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.decorators import action, api_view
 from rest_framework.generics import get_object_or_404
-
+from drf_pdf.response import PDFFileResponse
+from drf_pdf.renderer import PDFRenderer
 from .permissions import IsAuthorOrReadOnly
 
 from .models import IngredientRecipe, Recipe, Tag, Ingredient, Favorite, \
@@ -63,11 +64,43 @@ def favorite(request, pk):
 
     if request.method == 'DELETE':
         favorite_qs = Favorite.objects.all()
-        favorite_recipe = get_object_or_404(favorite_qs, id=pk)
+        favorite_recipe = get_object_or_404(favorite_qs, recipe_id=pk)
         favorite_recipe.delete()
         return Response(status=status.HTTP_200_OK)
 
 
-class PurchaseViewSet(viewsets.ModelViewSet):
-    queryset = Purchase.objects.all()
-    serializer_class = PurchaseSerializer
+@api_view(['GET', 'DELETE'])
+def purchase(request, pk):
+    if request.method == 'GET':
+        qs = Recipe.objects.all()
+        recipe = get_object_or_404(qs, id=pk)
+        serializer = PurchaseSerializer(recipe)
+        user = request.user
+        author = recipe.author
+        purchase_recipe = None
+        try:
+            purchase_recipe = Purchase.objects.get(recipe_id=pk)
+        except:
+            print('Рецепт уже добавлен в список покупок')
+        if user != author and purchase_recipe is None:
+            Purchase.objects.create(author_id=recipe.author.id, recipe_id=pk)
+            serializer = PurchaseSerializer(data=recipe)
+            if serializer.is_valid():
+                serializer.save()
+        return Response(serializer.data)
+
+    if request.method == 'DELETE':
+        purchase_qs = Purchase.objects.all()
+        purchase_recipe = get_object_or_404(purchase_qs, recipe_id=pk)
+        purchase_recipe.delete()
+        return Response(status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def export_purchase(request):
+    print('Test')
+    renderer_classes = (PDFRenderer, )
+    return PDFFileResponse(
+        file_path='/path/to/file.pdf',
+        status=status.HTTP_200_OK
+    )

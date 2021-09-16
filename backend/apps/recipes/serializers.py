@@ -66,13 +66,14 @@ class GetRecipeSerializer(serializers.ModelSerializer):
         many=True, source='recipe_ingredients'
     )
     is_favorited = serializers.SerializerMethodField()
+    is_in_shopping_cart = serializers.SerializerMethodField()
 
     class Meta:
         model = Recipe
         fields = (
             'id',
             'is_favorited',
-            # 'is_in_shopping_cart',
+            'is_in_shopping_cart',
             'name',
             'author',
             'image',
@@ -84,6 +85,9 @@ class GetRecipeSerializer(serializers.ModelSerializer):
 
     def get_is_favorited(self, obj):
         return Favorite.objects.filter(recipe=obj).exists()
+
+    def get_is_in_shopping_cart(self, obj):
+        return Purchase.objects.filter(recipe=obj).exists()
 
 
 class PostRecipeSerializer(serializers.ModelSerializer):
@@ -156,21 +160,6 @@ class PostRecipeSerializer(serializers.ModelSerializer):
         ).data
 
 
-class FavoriteRecipeSerializer(serializers.ModelSerializer):
-    ingredients = GetIngredientRecipeSerializer(
-        many=True, source='recipe_ingredients'
-    )
-
-    class Meta:
-        model = Recipe
-        fields = (
-            'id',
-            'name',
-            'image',
-            'cooking_time',
-        )
-
-
 class FavoriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
@@ -181,14 +170,14 @@ class FavoriteSerializer(serializers.ModelSerializer):
             'cooking_time',
         )
 
-    def create(self, validated_data):
-        print('update', validated_data)
-        return validated_data
+    #def create(self, validated_data):
+       # print('update', validated_data)
+        #return validated_data
 
 
 class PurchaseSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Purchase
+        model = Recipe
         fields = (
             'id',
             'name',
