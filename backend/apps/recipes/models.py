@@ -61,11 +61,13 @@ class Favorite(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'{self.recipe}'
+
 
 class Purchase(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-
 
 # is_favorited = models.BooleanField(blank=True)
 # is_in_shopping_cart = models.BooleanField(blank=True)

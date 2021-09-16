@@ -49,12 +49,18 @@ def favorite(request, pk):
         serializer = FavoriteSerializer(recipe)
         user = request.user
         author = recipe.author
-        if user != author:
+        favorite_recipe = None
+        try:
+            favorite_recipe = Favorite.objects.get(recipe_id=pk)
+        except:
+            print('Рецепт уже добавлен в избранное')
+        if user != author and favorite_recipe is None:
             Favorite.objects.create(author_id=recipe.author.id, recipe_id=pk)
-            serializer.save()
-        print('user', user)
-        print('user', author)
+            serializer = FavoriteSerializer(data=recipe)
+            if serializer.is_valid():
+                serializer.save()
         return Response(serializer.data)
+
     if request.method == 'DELETE':
         favorite_qs = Favorite.objects.all()
         favorite_recipe = get_object_or_404(favorite_qs, id=pk)
