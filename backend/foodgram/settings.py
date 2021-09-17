@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'apps.users.apps.UsersConfig',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_csv',
     'djoser',
     'sorl.thumbnail',
 ]
@@ -93,7 +94,7 @@ REST_FRAMEWORK = {
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
-    ]
+    ],
 }
 
 

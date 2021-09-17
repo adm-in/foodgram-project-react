@@ -1,10 +1,14 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework import viewsets
-from rest_framework.decorators import action, api_view
+from rest_framework.decorators import action, api_view, renderer_classes
 from rest_framework.generics import get_object_or_404
-from drf_pdf.response import PDFFileResponse
-from drf_pdf.renderer import PDFRenderer
+from rest_framework_csv.renderers import CSVRenderer
+from rest_framework.renderers import BaseRenderer
+from django.utils.encoding import smart_text
+from rest_framework import renderers
+from rest_framework.settings import api_settings
+from rest_framework_csv import renderers as r
 from .permissions import IsAuthorOrReadOnly
 
 from .models import IngredientRecipe, Recipe, Tag, Ingredient, Favorite, \
@@ -96,11 +100,15 @@ def purchase(request, pk):
         return Response(status=status.HTTP_200_OK)
 
 
+class MyUserRenderer(CSVRenderer):
+    header = ['name', 'cooking_time']
+
+
 @api_view(['GET'])
+@renderer_classes((MyUserRenderer,))
 def export_purchase(request):
-    print('Test')
-    renderer_classes = (PDFRenderer, )
-    return PDFFileResponse(
-        file_path='/path/to/file.pdf',
-        status=status.HTTP_200_OK
-    )
+    purchases = Purchase.objects.all()
+    content = [{'name': purchase.recipe.name,
+                'cooking_time': purchase.recipe.cooking_time}
+               for purchase in purchases]
+    return Response(content)
