@@ -1,22 +1,15 @@
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from rest_framework.decorators import action, api_view, renderer_classes
 from rest_framework.generics import get_object_or_404
+from rest_framework.response import Response
 from rest_framework_csv.renderers import CSVRenderer
-from rest_framework.renderers import BaseRenderer
-from django.utils.encoding import smart_text
-from rest_framework import renderers
-from rest_framework.settings import api_settings
-from rest_framework_csv import renderers as r
-from .permissions import IsAuthorOrReadOnly
 
-from .models import IngredientRecipe, Recipe, Tag, Ingredient, Favorite, \
-    Purchase
-from .serializers import (GetIngredientRecipeSerializer, GetRecipeSerializer,
-                          PostIngredientRecipeSerializer, PostRecipeSerializer,
-                          TagSerializer, IngredientSerializer,
-                          FavoriteSerializer, PurchaseSerializer)
+from .models import (Favorite, Ingredient, IngredientRecipe, Purchase, Recipe,
+                     Tag)
+from .permissions import IsAuthorOrReadOnly
+from .serializers import (FavoriteSerializer, GetRecipeSerializer,
+                          IngredientSerializer, PostRecipeSerializer,
+                          PurchaseSerializer, TagSerializer)
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -108,7 +101,11 @@ class MyUserRenderer(CSVRenderer):
 @renderer_classes((MyUserRenderer,))
 def export_purchase(request):
     purchases = Purchase.objects.all()
-    content = [{'name': purchase.recipe.name,
-                'cooking_time': purchase.recipe.cooking_time}
-               for purchase in purchases]
+    content = [
+        {
+            'name': purchase.recipe.name,
+            'cooking_time': purchase.recipe.cooking_time,
+        }
+        for purchase in purchases
+    ]
     return Response(content)
