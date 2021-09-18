@@ -12,10 +12,9 @@ class CustomUser(AbstractUser):
     username = models.CharField(
         verbose_name='Логин', max_length=150, unique=True,
     )
-    first_name = models.CharField(verbose_name='Имя', max_length=150,)
-    last_name = models.CharField(verbose_name='Фамилия', max_length=150,)
+    first_name = models.CharField(verbose_name='Имя', max_length=150, )
+    last_name = models.CharField(verbose_name='Фамилия', max_length=150, )
     objects = UserManager()
-
 
     class Meta:
         verbose_name = 'Пользователь'
@@ -31,18 +30,18 @@ class Subscribe(models.Model):
         related_name='user',
         verbose_name='Пользователь',
     )
-    author = models.ForeignKey(
+    owner = models.ForeignKey(
         CustomUser,
         on_delete=models.CASCADE,
-        related_name='author',
-        verbose_name='Автор',
+        related_name='owner',
+        verbose_name='Владелец аккаунта',
     )
 
     class Meta:
         verbose_name = 'Подписка'
         constraints = [
             models.UniqueConstraint(
-                fields=['user', 'author'], name='unique_follow'
+                fields=['user', 'owner'], name='unique_follow'
             )
         ]
 

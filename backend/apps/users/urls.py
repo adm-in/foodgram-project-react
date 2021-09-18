@@ -13,4 +13,5 @@ router_v1.register(r'users', views.CustomUserViewSet, basename='users')
 urlpatterns = [
     path('', include(router_v1.urls)),
     path('auth/', include('djoser.urls.authtoken')),
+    path('users/<int:pk>/subscribe/', views.subscribe),
 ]
