@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser, UserManager
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
@@ -14,7 +14,6 @@ class CustomUser(AbstractUser):
     )
     first_name = models.CharField(verbose_name='Имя', max_length=150, )
     last_name = models.CharField(verbose_name='Фамилия', max_length=150, )
-    objects = UserManager()
 
     class Meta:
         verbose_name = 'Пользователь'
@@ -30,10 +29,10 @@ class Subscribe(models.Model):
         related_name='user',
         verbose_name='Пользователь',
     )
-    owner = models.ForeignKey(
+    author = models.ForeignKey(
         CustomUser,
         on_delete=models.CASCADE,
-        related_name='owner',
+        related_name='author',
         verbose_name='Владелец аккаунта',
     )
 
@@ -41,7 +40,7 @@ class Subscribe(models.Model):
         verbose_name = 'Подписка'
         constraints = [
             models.UniqueConstraint(
-                fields=['user', 'owner'], name='unique_follow'
+                fields=['user', 'author'], name='unique_follow'
             )
         ]
 

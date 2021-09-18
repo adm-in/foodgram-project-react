@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-
-User = get_user_model()
+from users.models import CustomUser
 
 
 class Ingredient(models.Model):
@@ -23,7 +22,7 @@ class Tag(models.Model):
 
 class Recipe(models.Model):
     tags = models.ManyToManyField(Tag, through='TagRecipe')
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     ingredients = models.ManyToManyField(
         Ingredient, through='IngredientRecipe'
     )
@@ -59,7 +58,7 @@ class TagRecipe(models.Model):
 
 class Favorite(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.recipe}'
@@ -67,4 +66,4 @@ class Favorite(models.Model):
 
 class Purchase(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

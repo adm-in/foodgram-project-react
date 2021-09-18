@@ -25,6 +25,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class SubscribeSerializer(serializers.ModelSerializer):
     is_subscribed = serializers.SerializerMethodField()
     recipes = GetRecipeSerializer(source='recipe_set', many=True)
+    #recipes = serializers.SerializerMethodField()
 
     class Meta:
         model = CustomUser
@@ -36,3 +37,6 @@ class SubscribeSerializer(serializers.ModelSerializer):
 
     def get_is_subscribed(self, obj):
         return Subscribe.objects.filter(user=obj).exists()
+
+    #def get_recipes(self, obj):
+        #return obj.recipes.all()
