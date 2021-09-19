@@ -20,13 +20,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.recipes.apps.RecipesConfig',
-    'apps.users.apps.UsersConfig',
     'rest_framework',
     'rest_framework.authtoken',
+    'apps.recipes.apps.RecipesConfig',
+    'apps.users.apps.UsersConfig',
     'rest_framework_csv',
-    'djoser',
     'sorl.thumbnail',
+    'djoser',
 ]
 
 MIDDLEWARE = [
@@ -66,7 +66,7 @@ DATABASES = {
         'USER': 'admin',
         'PASSWORD': 'admin',
         'HOST': 'localhost',
-        'PORT': '',#5432
+        'PORT': '',  # 5432
     }
 }
 
@@ -97,9 +97,15 @@ REST_FRAMEWORK = {
     ],
 }
 
-
 DJOSER = {
     'LOGIN_FIELD': 'email',
+    'SERIALIZERS': {
+        'user_create': 'users.serializers.UserCreateSerializer'
+
+    },
+    'PERMISSIONS': {
+        'user_create': ['rest_framework.permissions.AllowAny'],
+    }
 }
 
 LANGUAGE_CODE = 'en-us'

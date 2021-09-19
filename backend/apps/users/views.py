@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.generics import get_object_or_404
 from recipes.models import Recipe
@@ -21,15 +21,37 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
 @api_view(['GET', 'DELETE'])
 def subscribe(request, pk):
-    qs = CustomUser.objects.all()
-    user = get_object_or_404(qs, id=pk)
-    author_id = request.user.id
-    print('REQUEST.USER.ID =', author_id)
-    try:
-        user_id = CustomUser.objects.get(id=pk).id
-        print('USER_ID', user_id)
-        Subscribe.objects.create(author_id=author_id, user_id=user_id)
-    except:
-        print('Вы уже подписаны на этого пользователя')
-    serializer = SubscribeSerializer(user)
-    return Response(serializer.data)
+    if request.method == 'GET':
+        qs = CustomUser.objects.all()
+        user = get_object_or_404(qs, id=pk)
+        author_id = request.user.id
+        print('REQUEST.USER.ID =', author_id)
+        try:
+            user_id = CustomUser.objects.get(id=pk).id
+            print('USER_ID', user_id)
+            Subscribe.objects.create(author_id=author_id, user_id=user_id)
+        except:
+            print('Вы уже подписаны на этого пользователя')
+        serializer = SubscribeSerializer(user)
+        return Response(serializer.data)
+
+    if request.method == 'DELETE':
+        subscribe_qs = Subscribe.objects.all()
+        subscribe_recipe = get_object_or_404(subscribe_qs, user_id=pk)
+        subscribe_recipe.delete()
+        return Response(status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def subscriptions(request):
+    subscribe_qs = Subscribe.objects.all()
+    #subscribe_recipe = Subscribe.objects.filter(subscribe_qs, author_id=request.user.id)
+    #subscribe_all = Subscribe.objects.all()
+    #print('????', subscribe_all)
+    print('request.user ID ', request.user.id)
+   # print('subscribe_qs ', subscribes )
+    #subscribe_recipe = get_object_or_404(subscribe_qs, author_id=request.user.id)
+    #print('!!!!', subscribe_recipe)
+   # serializer = SubscribeSerializer(1)
+    #return Response(serializer.data)
+    print(subscribe_qs)
