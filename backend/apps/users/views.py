@@ -4,7 +4,7 @@ from rest_framework.generics import get_object_or_404
 from recipes.models import Recipe
 
 from .serializers import CustomUserSerializer, SubscribeSerializer, \
-    GetRecipeSerializer
+    GetRecipeSerializer, SubscriptionsSerializer
 from .models import CustomUser, Subscribe
 from rest_framework.response import Response
 
@@ -44,14 +44,14 @@ def subscribe(request, pk):
 
 @api_view(['GET'])
 def subscriptions(request):
-    subscribe_qs = Subscribe.objects.all()
-    #subscribe_recipe = Subscribe.objects.filter(subscribe_qs, author_id=request.user.id)
-    #subscribe_all = Subscribe.objects.all()
-    #print('????', subscribe_all)
-    print('request.user ID ', request.user.id)
-   # print('subscribe_qs ', subscribes )
-    #subscribe_recipe = get_object_or_404(subscribe_qs, author_id=request.user.id)
-    #print('!!!!', subscribe_recipe)
-   # serializer = SubscribeSerializer(1)
-    #return Response(serializer.data)
-    print(subscribe_qs)
+    qs = CustomUser.objects.all()
+    #qs2 = Subscribe.objects.all()
+    user = get_object_or_404(qs, id=request.user.id)
+
+    subscribes = Subscribe.objects.filter(author_id=request.user.id)
+    #user2 = CustomUser.objects.filter(qs, subscribes)
+    #user2 = get_object_or_404(qs, user)
+    print('Subsribes', subscribes)
+    print('user', user)
+    serializer = SubscriptionsSerializer(user)
+    return Response(serializer.data)

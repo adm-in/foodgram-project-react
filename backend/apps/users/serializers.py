@@ -35,7 +35,7 @@ class SubscribeSerializer(serializers.ModelSerializer):
     is_subscribed = serializers.SerializerMethodField()
     recipes = GetRecipeSerializer(source='recipe_set', many=True)
 
-    # recipes = serializers.SerializerMethodField()
+    recipes_count = serializers.SerializerMethodField()
 
     class Meta:
         model = CustomUser
@@ -48,5 +48,41 @@ class SubscribeSerializer(serializers.ModelSerializer):
     def get_is_subscribed(self, obj):
         return Subscribe.objects.filter(user=obj).exists()
 
-    # def get_recipes(self, obj):
-    # return obj.recipes.all()
+    def get_recipes_count(self, obj):
+        return obj.recipe_set.all().count()
+
+
+class SubscriptionsSerializer(serializers.ModelSerializer):
+    is_subscribed = serializers.SerializerMethodField()
+    recipes = GetRecipeSerializer(source='recipe_set', many=True)
+
+    recipes_count = serializers.SerializerMethodField()
+
+    # test = serializers.SerializerMethodField()
+
+    class Meta:
+        model = CustomUser
+        fields = (
+            'email', 'id', 'username', 'first_name', 'last_name',
+            'is_subscribed', 'recipes',   'recipes_count', #'test'
+
+        )
+
+    def get_is_subscribed(self, obj):
+        return Subscribe.objects.filter(user=obj).exists()
+
+    def get_recipes_count(self, obj):
+        return obj.recipe_set.all().count()
+
+    #def to_representation(self, instance):
+       # serializer = CustomUserSerializer(source='instance.user', many=True)
+        #serializer.is_valid()
+        #print('!!', serializer)
+        #return serializer.data
+
+
+
+
+#  def get_test(self, obj):
+# print('OBJ', obj.id)
+# return Subscribe.objects.filter(author_id=obj.id)
