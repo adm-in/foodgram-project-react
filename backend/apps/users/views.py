@@ -1,5 +1,5 @@
 from rest_framework import viewsets, status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
 from rest_framework.generics import get_object_or_404
 from recipes.models import Recipe
 
@@ -42,16 +42,7 @@ def subscribe(request, pk):
         return Response(status=status.HTTP_200_OK)
 
 
-@api_view(['GET'])
-def subscriptions(request):
-    qs = CustomUser.objects.all()
-    #qs2 = Subscribe.objects.all()
-    user = get_object_or_404(qs, id=request.user.id)
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all()
+    serializer_class = SubscriptionsSerializer
 
-    subscribes = Subscribe.objects.filter(author_id=request.user.id)
-    #user2 = CustomUser.objects.filter(qs, subscribes)
-    #user2 = get_object_or_404(qs, user)
-    print('Subsribes', subscribes)
-    print('user', user)
-    serializer = SubscriptionsSerializer(user)
-    return Response(serializer.data)

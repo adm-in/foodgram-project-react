@@ -34,15 +34,13 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class SubscribeSerializer(serializers.ModelSerializer):
     is_subscribed = serializers.SerializerMethodField()
     recipes = GetRecipeSerializer(source='recipe_set', many=True)
-
     recipes_count = serializers.SerializerMethodField()
 
     class Meta:
         model = CustomUser
         fields = (
             'email', 'id', 'username', 'first_name', 'last_name',
-            'is_subscribed',
-            'recipes'
+            'is_subscribed', 'recipes', 'recipes_count'
         )
 
     def get_is_subscribed(self, obj):
@@ -55,10 +53,7 @@ class SubscribeSerializer(serializers.ModelSerializer):
 class SubscriptionsSerializer(serializers.ModelSerializer):
     is_subscribed = serializers.SerializerMethodField()
     recipes = GetRecipeSerializer(source='recipe_set', many=True)
-
     recipes_count = serializers.SerializerMethodField()
-
-    # test = serializers.SerializerMethodField()
 
     class Meta:
         model = CustomUser
@@ -80,9 +75,3 @@ class SubscriptionsSerializer(serializers.ModelSerializer):
         #print('!!', serializer)
         #return serializer.data
 
-
-
-
-#  def get_test(self, obj):
-# print('OBJ', obj.id)
-# return Subscribe.objects.filter(author_id=obj.id)
