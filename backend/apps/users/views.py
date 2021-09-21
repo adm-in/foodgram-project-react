@@ -2,6 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import api_view, action
 from rest_framework.generics import get_object_or_404
 from recipes.models import Recipe
+from djoser.views import UserViewSet as DjoserUserViewSet
 
 from .serializers import CustomUserSerializer, SubscribeSerializer, \
     GetRecipeSerializer, SubscriptionsSerializer
@@ -42,7 +43,11 @@ def subscribe(request, pk):
         return Response(status=status.HTTP_200_OK)
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = CustomUser.objects.all()
+class SubscriptionsViewSet(DjoserUserViewSet):
+    queryset = Subscribe.objects.all()
     serializer_class = SubscriptionsSerializer
 
+    def get_queryset(self):
+        user = self.request.user
+        following = user.following.all()
+        return following

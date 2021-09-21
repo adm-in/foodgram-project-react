@@ -51,27 +51,11 @@ class SubscribeSerializer(serializers.ModelSerializer):
 
 
 class SubscriptionsSerializer(serializers.ModelSerializer):
-    is_subscribed = serializers.SerializerMethodField()
-    recipes = GetRecipeSerializer(source='recipe_set', many=True)
-    recipes_count = serializers.SerializerMethodField()
-
     class Meta:
-        model = CustomUser
-        fields = (
-            'email', 'id', 'username', 'first_name', 'last_name',
-            'is_subscribed', 'recipes',   'recipes_count', #'test'
+        model = Subscribe
+        fields = '__all__'
 
-        )
-
-    def get_is_subscribed(self, obj):
-        return Subscribe.objects.filter(user=obj).exists()
-
-    def get_recipes_count(self, obj):
-        return obj.recipe_set.all().count()
-
-    #def to_representation(self, instance):
-       # serializer = CustomUserSerializer(source='instance.user', many=True)
-        #serializer.is_valid()
-        #print('!!', serializer)
-        #return serializer.data
-
+    def to_representation(self, instance):
+        subscriptions = CustomUser.objects.filter(follower=instance)
+        serializer = SubscribeSerializer(subscriptions, many=True)
+        return serializer.data
