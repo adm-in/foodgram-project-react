@@ -10,12 +10,12 @@ from .models import CustomUser, Subscribe
 from rest_framework.response import Response
 
 
-class CustomUserViewSet(viewsets.ModelViewSet):
+class UserViewSet(DjoserUserViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
 
 
-class RecipeViewSet(viewsets.ModelViewSet):
+class RecipeViewSet(DjoserUserViewSet):
     queryset = Recipe.objects.all()
     serializer_class = GetRecipeSerializer
 

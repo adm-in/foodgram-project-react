@@ -24,11 +24,17 @@ class GetRecipeSerializer(serializers.ModelSerializer):
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
+    is_subscribed = serializers.SerializerMethodField()
+
     class Meta:
         model = CustomUser
         fields = (
             'email', 'id', 'username', 'first_name', 'last_name',
+            'is_subscribed'
         )
+
+    def get_is_subscribed(self, obj):
+        return Subscribe.objects.filter(user=obj).exists()
 
 
 class SubscribeSerializer(serializers.ModelSerializer):
