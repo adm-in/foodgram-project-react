@@ -1,13 +1,14 @@
-from rest_framework import viewsets, status
-from rest_framework.decorators import api_view, action
-from rest_framework.generics import get_object_or_404
-from recipes.models import Recipe
 from djoser.views import UserViewSet as DjoserUserViewSet
-
-from .serializers import CustomUserSerializer, SubscribeSerializer, \
-    GetRecipeSerializer, SubscriptionsSerializer
-from .models import CustomUser, Subscribe
+from recipes.models import Recipe
+from rest_framework import status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.generics import get_object_or_404
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+
+from .models import CustomUser, Subscribe
+from .serializers import (CustomUserSerializer, GetRecipeSerializer,
+                          SubscribeSerializer, SubscriptionsSerializer)
 
 
 class UserViewSet(DjoserUserViewSet):
@@ -21,6 +22,7 @@ class RecipeViewSet(DjoserUserViewSet):
 
 
 @api_view(['GET', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def subscribe(request, pk):
     if request.method == 'GET':
         qs = CustomUser.objects.all()

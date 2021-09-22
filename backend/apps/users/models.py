@@ -12,8 +12,8 @@ class CustomUser(AbstractUser):
     username = models.CharField(
         verbose_name='Логин', max_length=150, unique=True,
     )
-    first_name = models.CharField(verbose_name='Имя', max_length=150, )
-    last_name = models.CharField(verbose_name='Фамилия', max_length=150, )
+    first_name = models.CharField(verbose_name='Имя', max_length=150,)
+    last_name = models.CharField(verbose_name='Фамилия', max_length=150,)
 
     class Meta:
         verbose_name = 'Пользователь'
@@ -45,4 +45,4 @@ class Subscribe(models.Model):
         ]
 
     def __str__(self):
-        return f'{self.user}' # => {self.author}
+        return f'{self.user} => {self.author}'

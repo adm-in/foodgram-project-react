@@ -1,6 +1,9 @@
 from rest_framework import status, viewsets
-from rest_framework.decorators import action, api_view, renderer_classes
+from rest_framework.decorators import (api_view, permission_classes,
+                                       renderer_classes)
 from rest_framework.generics import get_object_or_404
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_csv.renderers import CSVRenderer
 
@@ -14,8 +17,8 @@ from .serializers import (FavoriteSerializer, GetRecipeSerializer,
 
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
-
-    # permission_classes = [IsAuthorOrReadOnly]
+    pagination_class = PageNumberPagination
+    permission_classes = [IsAuthorOrReadOnly]
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -27,19 +30,31 @@ class RecipeViewSet(viewsets.ModelViewSet):
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
+    pagination_class = None
+    permission_classes = [
+        AllowAny,
+    ]
 
 
 class IngredientRecipeViewSet(viewsets.ModelViewSet):
     queryset = IngredientRecipe.objects.all()
     serializer_class = GetRecipeSerializer
+    permission_classes = [
+        AllowAny,
+    ]
 
 
 class IngredientViewSet(viewsets.ModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
+    pagination_class = None
+    permission_classes = [
+        AllowAny,
+    ]
 
 
 @api_view(['GET', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def favorite(request, pk):
     if request.method == 'GET':
         qs = Recipe.objects.all()
@@ -67,6 +82,7 @@ def favorite(request, pk):
 
 
 @api_view(['GET', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def purchase(request, pk):
     if request.method == 'GET':
         qs = Recipe.objects.all()
@@ -99,6 +115,7 @@ class MyUserRenderer(CSVRenderer):
 
 @api_view(['GET'])
 @renderer_classes((MyUserRenderer,))
+@permission_classes([IsAuthenticated])
 def export_purchase(request):
     purchases = Purchase.objects.all()
     content = [

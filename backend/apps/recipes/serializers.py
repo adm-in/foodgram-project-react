@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from .models import Ingredient, IngredientRecipe, Recipe, Tag, TagRecipe, \
-    Ingredient, Favorite, Purchase
+from .models import (Favorite, Ingredient, IngredientRecipe, Purchase, Recipe,
+                     Tag)
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -26,7 +26,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class PostIngredientRecipeSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(source='ingredient.id', )
+    id = serializers.IntegerField(source='ingredient.id',)
 
     class Meta:
         model = IngredientRecipe
@@ -94,7 +94,7 @@ class PostRecipeSerializer(serializers.ModelSerializer):
     tags = serializers.PrimaryKeyRelatedField(
         many=True, queryset=Tag.objects.all(),
     )
-    ingredients = PostIngredientRecipeSerializer(many=True, )
+    ingredients = PostIngredientRecipeSerializer(many=True,)
 
     class Meta:
         model = Recipe
@@ -134,8 +134,9 @@ class PostRecipeSerializer(serializers.ModelSerializer):
 
         instance.name = validated_data.get('name', instance.name)
         instance.text = validated_data.get('text', instance.text)
-        instance.cooking_time = validated_data.get('cooking_time',
-                                                   instance.cooking_time)
+        instance.cooking_time = validated_data.get(
+            'cooking_time', instance.cooking_time
+        )
 
         IngredientRecipe.objects.filter(recipe=instance).delete()
         for ingredient in ingredients:
@@ -146,17 +147,14 @@ class PostRecipeSerializer(serializers.ModelSerializer):
             IngredientRecipe.objects.create(
                 ingredient=get_ingredient,
                 recipe=instance,
-                amount=ingredient_amount
+                amount=ingredient_amount,
             )
         instance.save()
         return instance
 
     def to_representation(self, instance):
         return GetRecipeSerializer(
-            instance,
-            context={
-                'request': self.context.get('request')
-            }
+            instance, context={'request': self.context.get('request')}
         ).data
 
 
@@ -169,10 +167,6 @@ class FavoriteSerializer(serializers.ModelSerializer):
             'image',
             'cooking_time',
         )
-
-    #def create(self, validated_data):
-       # print('update', validated_data)
-        #return validated_data
 
 
 class PurchaseSerializer(serializers.ModelSerializer):
