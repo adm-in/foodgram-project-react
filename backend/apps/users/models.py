@@ -15,8 +15,8 @@ class CustomUser(AbstractUser):
     first_name = models.CharField(verbose_name='Имя', max_length=150,)
     last_name = models.CharField(verbose_name='Фамилия', max_length=150,)
 
-    class Meta:
-        verbose_name = 'Пользователь'
+    verbose_name = 'Пользователь'
+    verbose_name_plural = 'Пользователи'
 
     def __str__(self):
         return self.username
@@ -38,6 +38,7 @@ class Subscribe(models.Model):
 
     class Meta:
         verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
         constraints = [
             models.UniqueConstraint(
                 fields=['user', 'author'], name='unique_follow'
