@@ -6,7 +6,11 @@
 
 # Команды для запуска приложения:
 1. Загрузка рецептов python manage.py load_data
-2. Будет дополнено
+2. Загрузка фикстур python manage.py loaddata fixtures.json 
+3. Тестовый логин и пароль администратора: 
+test_admin@admin.ru
+12345qwerty!
+4. Будет дополнено.
 
 - [admin](http://djangoproject.gq/admin)
 

@@ -15,6 +15,7 @@ class UserCreateSerializer(DjoserUserCreateSerializer):
             'username',
             'first_name',
             'last_name',
+            'password',
         )
 
 
