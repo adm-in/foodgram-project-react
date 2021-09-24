@@ -103,7 +103,6 @@ class PostRecipeSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'name',
-            'author',
             'text',
             'ingredients',
             'tags',
