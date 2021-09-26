@@ -79,7 +79,7 @@ class GetRecipeSerializer(serializers.ModelSerializer):
             'is_in_shopping_cart',
             'name',
             'author',
-            #'image',
+            'image',
             'text',
             'ingredients',
             'tags',
@@ -98,9 +98,9 @@ class PostRecipeSerializer(serializers.ModelSerializer):
         many=True, queryset=Tag.objects.all(),
     )
     ingredients = PostIngredientRecipeSerializer(many=True,)
-   # image = Base64ImageField(
-       # max_length=None, required=True, allow_empty_file=False, use_url=True,
-   # )
+    image = Base64ImageField(
+        max_length=None, required=True, allow_empty_file=False, use_url=True,
+    )
 
     class Meta:
         model = Recipe
@@ -111,7 +111,7 @@ class PostRecipeSerializer(serializers.ModelSerializer):
             'ingredients',
             'tags',
             'cooking_time',
-            #'image'
+            'image'
         )
 
     def create(self, validated_data):
