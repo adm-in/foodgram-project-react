@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import CustomUser
+from .validators import cooking_time_validator
 
 
 class Ingredient(models.Model):
@@ -13,17 +14,17 @@ class Ingredient(models.Model):
         verbose_name_plural = 'Ингредиенты'
 
     def __str__(self):
-        return '{}, {}'.format(self.name, self.measurement_unit)
+        return f'{self.name}, {self.measurement_unit}'
 
 
 class Tag(models.Model):
     name = models.CharField(
-        max_length=7, unique=True, blank=True, verbose_name='Тэг'
+        max_length=7, unique=True, verbose_name='Тэг'
     )
     color = models.CharField(
-        max_length=7, unique=True, blank=True, verbose_name='Цвет'
+        max_length=7, unique=True, verbose_name='Цвет'
     )
-    slug = models.SlugField(unique=True, blank=True, verbose_name='Слаг')
+    slug = models.SlugField(unique=True, verbose_name='Слаг')
 
     class Meta:
         verbose_name = 'Тэг'
@@ -47,7 +48,10 @@ class Recipe(models.Model):
         verbose_name='Изображение',
     )
     text = models.TextField(verbose_name='Описание')
-    cooking_time = models.IntegerField(verbose_name='Время приготовления')
+    cooking_time = models.PositiveIntegerField(
+        validators=(cooking_time_validator,),
+        verbose_name='Время приготовления'
+    )
     pub_date = models.DateTimeField(
         auto_now_add=True, verbose_name='Дата публикации'
     )
