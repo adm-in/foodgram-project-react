@@ -28,7 +28,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class PostIngredientRecipeSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(source='ingredient.id',)
+    id = serializers.IntegerField(source='ingredient.id', )
 
     class Meta:
         model = IngredientRecipe
@@ -97,7 +97,7 @@ class PostRecipeSerializer(serializers.ModelSerializer):
     tags = serializers.PrimaryKeyRelatedField(
         many=True, queryset=Tag.objects.all(),
     )
-    ingredients = PostIngredientRecipeSerializer(many=True,)
+    ingredients = PostIngredientRecipeSerializer(many=True, )
     image = Base64ImageField(
         max_length=None, required=True, allow_empty_file=False, use_url=True,
     )

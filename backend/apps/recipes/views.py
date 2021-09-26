@@ -9,7 +9,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_csv.renderers import CSVRenderer
-
+from .filters import RecipeFilter
 from .models import (Favorite, Ingredient, IngredientRecipe, Purchase, Recipe,
                      Tag)
 from .permissions import IsAuthorOrReadOnly
@@ -21,6 +21,7 @@ from .serializers import (FavoriteSerializer, GetRecipeSerializer,
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filter_class = RecipeFilter
     pagination_class = PageNumberPagination
     permission_classes = [IsAuthorOrReadOnly]
 
@@ -74,8 +75,10 @@ def favorite(request, pk):
             serializer = FavoriteSerializer(data=recipe)
             if serializer.is_valid():
                 serializer.save()
+            serializer = FavoriteSerializer(recipe)
         except IntegrityError:
             print('Рецепт уже добавлен в избранное')
+        print('SERIAZLISER', serializer.data)
         return Response(serializer.data)
 
     favorite_qs = Favorite.objects.all()
