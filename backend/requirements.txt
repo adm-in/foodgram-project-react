@@ -8,6 +8,7 @@ cryptography==3.4.7
 decorator==5.1.0
 defusedxml==0.7.1
 Django==3.0.5
+django-filter==21.1
 django-templated-mail==1.1.1
 djangorestframework==3.12.4
 djangorestframework-csv==2.1.1
