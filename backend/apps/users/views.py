@@ -28,10 +28,8 @@ def subscribe(request, pk):
         qs = CustomUser.objects.all()
         user = get_object_or_404(qs, id=pk)
         author_id = request.user.id
-        print('REQUEST.USER.ID =', author_id)
         try:
             user_id = CustomUser.objects.get(id=pk).id
-            print('USER_ID', user_id)
             Subscribe.objects.create(author_id=author_id, user_id=user_id)
         except:
             print('Вы уже подписаны на этого пользователя')
