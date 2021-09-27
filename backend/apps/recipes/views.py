@@ -9,7 +9,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_csv.renderers import CSVRenderer
-from .filters import RecipeFilter
+from .filters import RecipeFilter, IngredientFilter
 from .models import (Favorite, Ingredient, IngredientRecipe, Purchase, Recipe,
                      Tag)
 from .permissions import IsAuthorOrReadOnly
@@ -44,23 +44,23 @@ class TagViewSet(viewsets.ModelViewSet):
     ]
 
 
-class IngredientRecipeViewSet(viewsets.ModelViewSet):
-    queryset = IngredientRecipe.objects.all()
-    serializer_class = GetRecipeSerializer
-    permission_classes = [
-        AllowAny,
-    ]
-
-
-class IngredientViewSet(viewsets.ModelViewSet):
+class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     pagination_class = None
     permission_classes = [
         AllowAny,
     ]
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['name', ]
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filter_class = IngredientFilter
+
+
+class IngredientRecipeViewSet(viewsets.ModelViewSet):
+    queryset = IngredientRecipe.objects.all()
+    serializer_class = GetRecipeSerializer
+    permission_classes = [
+        AllowAny,
+    ]
 
 
 @api_view(['GET', 'DELETE'])
@@ -71,14 +71,13 @@ def favorite(request, pk):
         recipe = get_object_or_404(qs, id=pk)
         serializer = FavoriteSerializer(recipe)
         try:
-            Favorite.objects.create(author_id=recipe.author.id, recipe_id=pk)
+            Favorite.objects.create(user_id=request.user.id, recipe_id=pk)
             serializer = FavoriteSerializer(data=recipe)
             if serializer.is_valid():
                 serializer.save()
             serializer = FavoriteSerializer(recipe)
         except IntegrityError:
             print('Рецепт уже добавлен в избранное')
-        print('SERIAZLISER', serializer.data)
         return Response(serializer.data)
 
     favorite_qs = Favorite.objects.all()
@@ -102,7 +101,7 @@ def purchase(request, pk):
         except:
             print('Рецепт уже добавлен в список покупок')
         if user != author and purchase_recipe is None:
-            Purchase.objects.create(author_id=recipe.author.id, recipe_id=pk)
+            Purchase.objects.create(user_id=recipe.author.id, recipe_id=pk)
             serializer = PurchaseSerializer(data=recipe)
             if serializer.is_valid():
                 serializer.save()
