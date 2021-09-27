@@ -93,25 +93,20 @@ def purchase(request, pk):
         qs = Recipe.objects.all()
         recipe = get_object_or_404(qs, id=pk)
         serializer = PurchaseSerializer(recipe)
-        user = request.user
-        author = recipe.author
-        purchase_recipe = None
         try:
-            purchase_recipe = Purchase.objects.get(recipe_id=pk)
-        except:
-            print('Рецепт уже добавлен в список покупок')
-        if user != author and purchase_recipe is None:
-            Purchase.objects.create(user_id=recipe.author.id, recipe_id=pk)
+            Purchase.objects.create(user_id=request.user.id, recipe_id=pk)
             serializer = PurchaseSerializer(data=recipe)
             if serializer.is_valid():
                 serializer.save()
+            serializer = PurchaseSerializer(recipe)
+        except IntegrityError:
+            print('Рецепт уже добавлен в избранное')
         return Response(serializer.data)
 
-    if request.method == 'DELETE':
-        purchase_qs = Purchase.objects.all()
-        purchase_recipe = get_object_or_404(purchase_qs, recipe_id=pk)
-        purchase_recipe.delete()
-        return Response(status=status.HTTP_200_OK)
+    purchase_qs = Purchase.objects.all()
+    purchase_recipe = get_object_or_404(purchase_qs, recipe_id=pk)
+    purchase_recipe.delete()
+    return Response(status=status.HTTP_200_OK)
 
 
 class MyUserRenderer(CSVRenderer):
