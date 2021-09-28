@@ -1,14 +1,10 @@
-import django_filters.rest_framework
 from djoser.views import UserViewSet as DjoserUserViewSet
 from recipes.models import Recipe
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.generics import get_object_or_404, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .paginators import CustomPageNumberPaginator
-from rest_framework.pagination import PageNumberPagination, \
-    LimitOffsetPagination
 from .models import CustomUser, Subscribe
 from .serializers import (CustomUserSerializer, GetRecipeSerializer,
                           SubscribeSerializer, SubscriptionsSerializer)
@@ -46,7 +42,9 @@ class SubscriptionsViewSet(DjoserUserViewSet):
     queryset = Subscribe.objects.all()
     serializer_class = SubscriptionsSerializer
 
+    # pagination_class = CustomPageNumberPaginator
+
     def get_queryset(self):
         user = self.request.user
         following = user.following.all()
-        return following
+        return following.order_by('author')
