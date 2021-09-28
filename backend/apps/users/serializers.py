@@ -2,7 +2,7 @@ from djoser.serializers import \
     UserCreateSerializer as DjoserUserCreateSerializer
 from recipes.models import Recipe
 from rest_framework import serializers
-
+from drf_extra_fields.fields import Base64ImageField
 from .models import CustomUser, Subscribe
 
 
@@ -20,6 +20,10 @@ class UserCreateSerializer(DjoserUserCreateSerializer):
 
 
 class GetRecipeSerializer(serializers.ModelSerializer):
+    image = Base64ImageField(
+        max_length=None, required=True, allow_empty_file=False, use_url=True,
+    )
+
     class Meta:
         model = Recipe
         fields = ('id', 'name', 'image', 'cooking_time')

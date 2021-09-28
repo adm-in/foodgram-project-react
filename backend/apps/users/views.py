@@ -1,11 +1,14 @@
+import django_filters.rest_framework
 from djoser.views import UserViewSet as DjoserUserViewSet
 from recipes.models import Recipe
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.generics import get_object_or_404
+from rest_framework.generics import get_object_or_404, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
+from .paginators import CustomPageNumberPaginator
+from rest_framework.pagination import PageNumberPagination, \
+    LimitOffsetPagination
 from .models import CustomUser, Subscribe
 from .serializers import (CustomUserSerializer, GetRecipeSerializer,
                           SubscribeSerializer, SubscriptionsSerializer)
@@ -14,11 +17,6 @@ from .serializers import (CustomUserSerializer, GetRecipeSerializer,
 class UserViewSet(DjoserUserViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
-
-
-class RecipeViewSet(DjoserUserViewSet):
-    queryset = Recipe.objects.all()
-    serializer_class = GetRecipeSerializer
 
 
 @api_view(['GET', 'DELETE'])
@@ -34,6 +32,7 @@ def subscribe(request, pk):
         except:
             print('Вы уже подписаны на этого пользователя')
         serializer = SubscribeSerializer(user)
+        print('test')
         return Response(serializer.data)
 
     if request.method == 'DELETE':

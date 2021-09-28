@@ -5,7 +5,7 @@ from rest_framework.decorators import (api_view, permission_classes,
                                        renderer_classes)
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
-from rest_framework.pagination import PageNumberPagination
+from .paginators import CustomPageNumberPaginator
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_csv.renderers import CSVRenderer
@@ -22,8 +22,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     filter_class = RecipeFilter
-    pagination_class = PageNumberPagination
+    pagination_class = CustomPageNumberPaginator
     permission_classes = [IsAuthorOrReadOnly]
+    recipes_limit = 6
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -89,6 +90,7 @@ def favorite(request, pk):
 @api_view(['GET', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def purchase(request, pk):
+    pagination_class = CustomPageNumberPaginator
     if request.method == 'GET':
         qs = Recipe.objects.all()
         recipe = get_object_or_404(qs, id=pk)
