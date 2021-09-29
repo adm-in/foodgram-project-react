@@ -10,7 +10,7 @@ router_v1 = DefaultRouter()
 router_v1.register(
     'users/subscriptions', views.SubscriptionsViewSet, basename='subscriptions'
 )
-router_v1.register(r'users', views.UserViewSet, basename='users')
+router_v1.register('users', views.UserViewSet, basename='users')
 
 urlpatterns = [
     path('', include(router_v1.urls)),

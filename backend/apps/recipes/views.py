@@ -89,7 +89,6 @@ def favorite(request, pk):
 @api_view(['GET', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def purchase(request, pk):
-    pagination_class = CustomPageNumberPaginator
     if request.method == 'GET':
         qs = Recipe.objects.all()
         recipe = get_object_or_404(qs, id=pk)
