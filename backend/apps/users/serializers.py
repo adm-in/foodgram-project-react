@@ -49,7 +49,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
 class SubscribeSerializer(serializers.ModelSerializer):
     is_subscribed = serializers.SerializerMethodField()
-    recipes = GetRecipeSerializer(source='recipe_set', many=True)
+    recipes = serializers.SerializerMethodField()
     recipes_count = serializers.SerializerMethodField()
 
     class Meta:
@@ -70,6 +70,11 @@ class SubscribeSerializer(serializers.ModelSerializer):
 
     def get_recipes_count(self, obj):
         return obj.recipe_set.all().count()
+
+    def get_recipes(self, user):
+        from recipes.serializers import GetRecipeSerializer
+        queryset = Recipe.objects.filter(author=user)[:3]
+        return GetRecipeSerializer(queryset, many=True).data
 
 
 class SubscriptionsSerializer(serializers.ModelSerializer):

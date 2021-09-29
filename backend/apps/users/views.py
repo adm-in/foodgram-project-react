@@ -39,12 +39,9 @@ def subscribe(request, pk):
 
 
 class SubscriptionsViewSet(DjoserUserViewSet):
-    queryset = Subscribe.objects.all()
-    serializer_class = SubscriptionsSerializer
-
-    # pagination_class = CustomPageNumberPaginator
+    queryset = CustomUser.objects.all()
+    serializer_class = SubscribeSerializer
 
     def get_queryset(self):
         user = self.request.user
-        following = user.following.all()
-        return following.order_by('author')
+        return CustomUser.objects.filter(follower__author=user)
