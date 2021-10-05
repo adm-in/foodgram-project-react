@@ -12,7 +12,7 @@ from rest_framework_csv.renderers import CSVRenderer
 from .filters import RecipeFilter, IngredientFilter
 from .models import (Favorite, Ingredient, IngredientRecipe, Purchase, Recipe,
                      Tag)
-from .permissions import IsAuthorOrReadOnly
+from .permissions import AdminOrAuthorOrReadOnly
 from .serializers import (FavoriteSerializer, GetRecipeSerializer,
                           IngredientSerializer, PostRecipeSerializer,
                           PurchaseSerializer, TagSerializer)
@@ -23,7 +23,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     filter_class = RecipeFilter
     pagination_class = CustomPageNumberPaginator
-    permission_classes = [IsAuthorOrReadOnly]
+    permission_classes = [AdminOrAuthorOrReadOnly, ]
     recipes_limit = 6
 
     def perform_create(self, serializer):
