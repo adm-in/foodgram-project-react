@@ -24,7 +24,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     filter_class = RecipeFilter
     pagination_class = CustomPageNumberPaginator
     permission_classes = [AdminOrAuthorOrReadOnly, ]
-    recipes_limit = 6
+    #recipes_limit = 6
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
