@@ -13,7 +13,9 @@
 
 - [admin](http://djangoproject.gq/admin)
 
-
+Тестовый логин и пароль администратора: 
+- ```test_admin@admin.ru```
+- ```12345qwerty!```
 ### Технологии:
 - [Django 3.0.5](https://www.djangoproject.com)
 - [DjangoRestFramework 3.11.0](https://www.django-rest-framework.org)
