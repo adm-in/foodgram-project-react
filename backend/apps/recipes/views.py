@@ -1,22 +1,20 @@
 import django_filters.rest_framework
 from django.db import IntegrityError
-from rest_framework import filters, status, viewsets
+from recipes.filters import IngredientFilter, RecipeFilter
+from recipes.models import (Favorite, Ingredient, IngredientRecipe, Purchase,
+                            Recipe, Tag)
+from recipes.paginators import CustomPageNumberPaginator
+from recipes.permissions import AdminOrAuthorOrReadOnly
+from recipes.serializers import (FavoriteSerializer, GetRecipeSerializer,
+                                 IngredientSerializer, PostRecipeSerializer,
+                                 PurchaseSerializer, TagSerializer)
+from rest_framework import status, viewsets
 from rest_framework.decorators import (api_view, permission_classes,
                                        renderer_classes)
-from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_csv.renderers import CSVRenderer
-
-from .filters import IngredientFilter, RecipeFilter
-from .models import (Favorite, Ingredient, IngredientRecipe, Purchase, Recipe,
-                     Tag)
-from .paginators import CustomPageNumberPaginator
-from .permissions import AdminOrAuthorOrReadOnly
-from .serializers import (FavoriteSerializer, GetRecipeSerializer,
-                          IngredientSerializer, PostRecipeSerializer,
-                          PurchaseSerializer, TagSerializer)
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
