@@ -1,12 +1,11 @@
-from djoser.serializers import \
-    UserCreateSerializer as DjoserUserCreateSerializer
+from djoser.serializers import UserCreateSerializer as DjoserUserCreate
 from drf_extra_fields.fields import Base64ImageField
 from recipes.models import Recipe
 from rest_framework import serializers
 from users.models import CustomUser, Subscribe
 
 
-class UserCreateSerializer(DjoserUserCreateSerializer):
+class UserCreateSerializer(DjoserUserCreate):
     class Meta:
         model = CustomUser
         fields = (
