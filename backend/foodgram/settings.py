@@ -8,7 +8,7 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
 load_dotenv('.env')
 
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY', 'MY_SECRET_KEY')
 
 DEBUG = True
 
