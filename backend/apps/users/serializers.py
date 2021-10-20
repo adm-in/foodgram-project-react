@@ -1,8 +1,9 @@
 from djoser.serializers import \
     UserCreateSerializer as DjoserUserCreateSerializer
+from drf_extra_fields.fields import Base64ImageField
 from recipes.models import Recipe
 from rest_framework import serializers
-from drf_extra_fields.fields import Base64ImageField
+
 from .models import CustomUser, Subscribe
 
 
@@ -73,6 +74,7 @@ class SubscribeSerializer(serializers.ModelSerializer):
 
     def get_recipes(self, user):
         from recipes.serializers import GetRecipeSerializer
+
         queryset = Recipe.objects.filter(author=user)[:3]
         return GetRecipeSerializer(queryset, many=True).data
 
