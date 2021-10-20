@@ -1,8 +1,7 @@
 import csv
 
 from django.core.management.base import BaseCommand
-
-from ...models import Ingredient
+from recipes.models import Ingredient
 
 
 class Command(BaseCommand):
@@ -12,5 +11,5 @@ class Command(BaseCommand):
             for row in file_reader:
                 name, unit = row
                 Ingredient.objects.get_or_create(
-                    name=name, measurement_unit=unit
+                    name=name, measurement_unit=unit,
                 )

@@ -12,8 +12,8 @@ class CustomUser(AbstractUser):
     username = models.CharField(
         verbose_name='Логин', max_length=150, unique=True,
     )
-    first_name = models.CharField(verbose_name='Имя', max_length=150,)
-    last_name = models.CharField(verbose_name='Фамилия', max_length=150,)
+    first_name = models.CharField(verbose_name='Имя', max_length=150)
+    last_name = models.CharField(verbose_name='Фамилия', max_length=150)
 
     verbose_name = 'Пользователь'
     verbose_name_plural = 'Пользователи'
@@ -41,8 +41,8 @@ class Subscribe(models.Model):
         verbose_name_plural = 'Подписки'
         constraints = [
             models.UniqueConstraint(
-                fields=['user', 'author'], name='unique_follow'
-            )
+                fields=['user', 'author'], name='unique_follow',
+            ),
         ]
 
     def __str__(self):

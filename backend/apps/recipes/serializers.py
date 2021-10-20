@@ -27,7 +27,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class PostIngredientRecipeSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(source='ingredient.id',)
+    id = serializers.IntegerField(source='ingredient.id')
 
     class Meta:
         model = IngredientRecipe
@@ -64,7 +64,7 @@ class GetIngredientRecipeSerializer(serializers.ModelSerializer):
 class GetRecipeSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
     ingredients = GetIngredientRecipeSerializer(
-        many=True, source='recipe_ingredients'
+        many=True, source='recipe_ingredients',
     )
     author = CustomUserSerializer(read_only=True)
     is_favorited = serializers.SerializerMethodField()
@@ -96,7 +96,7 @@ class PostRecipeSerializer(serializers.ModelSerializer):
     tags = serializers.PrimaryKeyRelatedField(
         many=True, queryset=Tag.objects.all(),
     )
-    ingredients = PostIngredientRecipeSerializer(many=True,)
+    ingredients = PostIngredientRecipeSerializer(many=True)
     image = Base64ImageField(
         max_length=None, required=True, allow_empty_file=False, use_url=True,
     )
@@ -140,7 +140,7 @@ class PostRecipeSerializer(serializers.ModelSerializer):
         instance.name = validated_data.get('name', instance.name)
         instance.text = validated_data.get('text', instance.text)
         instance.cooking_time = validated_data.get(
-            'cooking_time', instance.cooking_time
+            'cooking_time', instance.cooking_time,
         )
 
         IngredientRecipe.objects.filter(recipe=instance).delete()
@@ -159,7 +159,7 @@ class PostRecipeSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         return GetRecipeSerializer(
-            instance, context={'request': self.context.get('request')}
+            instance, context={'request': self.context.get('request')},
         ).data
 
 
