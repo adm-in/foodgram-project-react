@@ -1,7 +1,7 @@
 from django.db import models
 from users.models import CustomUser
 
-from .validators import cooking_time_validator
+from recipes.validators import cooking_time_validator
 
 
 class Ingredient(models.Model):
@@ -116,8 +116,8 @@ class Favorite(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['recipe', 'user'], name='unique_favorite',
-            )
-        ],
+            ),
+        ]
 
     def __str__(self):
         return f'{self.recipe}'
@@ -143,5 +143,5 @@ class Purchase(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['recipe', 'user'], name='unique_purchases'
-            )
-        ],
+            ),
+        ]
