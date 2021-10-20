@@ -140,5 +140,5 @@ class Purchase(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['recipe', 'user'], name='unique_purchases',
-            )
-        ],
+            ),
+        ]
