@@ -139,6 +139,6 @@ class Purchase(models.Model):
         verbose_name_plural = 'Список покупок'
         constraints = [
             models.UniqueConstraint(
-                fields=['recipe', 'user'], name='unique_purchases'
-            ),
+                fields=['recipe', 'user'], name='unique_purchases',
+            )
         ],
