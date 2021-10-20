@@ -7,7 +7,7 @@ from .validators import cooking_time_validator
 class Ingredient(models.Model):
     name = models.CharField(max_length=256, verbose_name='Название')
     measurement_unit = models.CharField(
-        max_length=64, verbose_name='Единица измерения'
+        max_length=64, verbose_name='Единица измерения',
     )
 
     class Meta:
@@ -36,7 +36,6 @@ class Recipe(models.Model):
     author = models.ForeignKey(
         CustomUser,
         on_delete=models.CASCADE,
-        #related_name='recipes',
         verbose_name='Автор',
     )
     ingredients = models.ManyToManyField(
@@ -55,7 +54,7 @@ class Recipe(models.Model):
         verbose_name='Время приготовления',
     )
     pub_date = models.DateTimeField(
-        auto_now_add=True, verbose_name='Дата публикации'
+        auto_now_add=True, verbose_name='Дата публикации',
     )
 
     class Meta:
@@ -69,7 +68,7 @@ class Recipe(models.Model):
 
 class IngredientRecipe(models.Model):
     ingredient = models.ForeignKey(
-        Ingredient, on_delete=models.CASCADE, verbose_name='Ингредиент'
+        Ingredient, on_delete=models.CASCADE, verbose_name='Ингредиент',
     )
     recipe = models.ForeignKey(
         Recipe,
@@ -90,7 +89,7 @@ class IngredientRecipe(models.Model):
 class TagRecipe(models.Model):
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE, verbose_name='Тэг')
     recipe = models.ForeignKey(
-        Recipe, on_delete=models.CASCADE, verbose_name='Рецепт'
+        Recipe, on_delete=models.CASCADE, verbose_name='Рецепт',
     )
 
     def __str__(self):
@@ -116,9 +115,9 @@ class Favorite(models.Model):
         verbose_name_plural = 'Избранное'
         constraints = [
             models.UniqueConstraint(
-                fields=['recipe', 'user'], name='unique_favorite'
+                fields=['recipe', 'user'], name='unique_favorite',
             )
-        ]
+        ],
 
     def __str__(self):
         return f'{self.recipe}'
@@ -145,4 +144,4 @@ class Purchase(models.Model):
             models.UniqueConstraint(
                 fields=['recipe', 'user'], name='unique_purchases'
             )
-        ]
+        ],
