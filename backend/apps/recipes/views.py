@@ -1,17 +1,18 @@
 import django_filters.rest_framework
 from django.db import IntegrityError
-from rest_framework import status, viewsets, filters
+from rest_framework import filters, status, viewsets
 from rest_framework.decorators import (api_view, permission_classes,
                                        renderer_classes)
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
-from .paginators import CustomPageNumberPaginator
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_csv.renderers import CSVRenderer
-from .filters import RecipeFilter, IngredientFilter
+
+from .filters import IngredientFilter, RecipeFilter
 from .models import (Favorite, Ingredient, IngredientRecipe, Purchase, Recipe,
                      Tag)
+from .paginators import CustomPageNumberPaginator
 from .permissions import AdminOrAuthorOrReadOnly
 from .serializers import (FavoriteSerializer, GetRecipeSerializer,
                           IngredientSerializer, PostRecipeSerializer,
@@ -23,8 +24,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
     filter_class = RecipeFilter
     pagination_class = CustomPageNumberPaginator
-    permission_classes = [AdminOrAuthorOrReadOnly, ]
-    #recipes_limit = 6
+    permission_classes = [
+        AdminOrAuthorOrReadOnly,
+    ]
+    # recipes_limit = 6
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
