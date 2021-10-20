@@ -142,3 +142,6 @@ class Purchase(models.Model):
                 fields=['recipe', 'user'], name='unique_purchases',
             ),
         ]
+
+    def __str__(self):
+        return f'{self.recipe}'
