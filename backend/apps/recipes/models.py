@@ -1,7 +1,6 @@
 from django.db import models
-from users.models import CustomUser
-
 from recipes.validators import cooking_time_validator
+from users.models import CustomUser
 
 
 class Ingredient(models.Model):
@@ -34,9 +33,7 @@ class Tag(models.Model):
 class Recipe(models.Model):
     tags = models.ManyToManyField(Tag, through='TagRecipe', verbose_name='Тэг')
     author = models.ForeignKey(
-        CustomUser,
-        on_delete=models.CASCADE,
-        verbose_name='Автор',
+        CustomUser, on_delete=models.CASCADE, verbose_name='Автор',
     )
     ingredients = models.ManyToManyField(
         Ingredient,
@@ -144,4 +141,4 @@ class Purchase(models.Model):
             models.UniqueConstraint(
                 fields=['recipe', 'user'], name='unique_purchases'
             ),
-        ]
+        ],
