@@ -25,7 +25,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
     permission_classes = [
         AdminOrAuthorOrReadOnly,
     ]
-    # recipes_limit = 6
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
