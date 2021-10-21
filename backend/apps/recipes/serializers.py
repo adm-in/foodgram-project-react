@@ -154,6 +154,8 @@ class PostRecipeSerializer(serializers.ModelSerializer):
                 recipe=instance,
                 amount=ingredient_amount,
             )
+        if validated_data.get('image') is not None:
+            instance.image = validated_data.pop('image')
         instance.save()
         return instance
 
