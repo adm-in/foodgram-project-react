@@ -35,7 +35,7 @@ def subscribe(request, pk):
     subscribe_qs = Subscribe.objects.all()
     subscribe_recipe = get_object_or_404(subscribe_qs, user_id=pk)
     subscribe_recipe.delete()
-    return Response(status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class SubscriptionsViewSet(DjoserUserViewSet):
