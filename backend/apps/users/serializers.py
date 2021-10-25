@@ -42,8 +42,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
             'is_subscribed',
         )
 
-    def get_is_subscribed(self, obj):
-        return Subscribe.objects.filter(user=obj).exists()
+    def get_is_subscribed(self, user):
+        return user.follower.all().exists()
 
 
 class SubscribeSerializer(serializers.ModelSerializer):
@@ -64,11 +64,11 @@ class SubscribeSerializer(serializers.ModelSerializer):
             'recipes_count',
         )
 
-    def get_is_subscribed(self, obj):
-        return Subscribe.objects.filter(user=obj).exists()
+    def get_is_subscribed(self, user):
+        return user.follower.all().exists()
 
-    def get_recipes_count(self, obj):
-        return obj.recipe_set.all().count()
+    def get_recipes_count(self, recipe):
+        return recipe.recipe_set.count()
 
     def get_recipes(self, user):
         from recipes.serializers import GetRecipeSerializer
