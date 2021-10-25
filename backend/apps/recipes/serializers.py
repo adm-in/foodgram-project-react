@@ -121,43 +121,36 @@ class PostRecipeSerializer(serializers.ModelSerializer):
         recipe.tags.set(tags)
 
         for ingredient in ingredients:
-            current_ingredient, ingredient_amount = ingredient
-            ingredient_id = ingredient[current_ingredient]['id']
-            ingredient_amount = ingredient[ingredient_amount]
-            get_ingredient = Ingredient.objects.get(id=ingredient_id)
             IngredientRecipe.objects.create(
-                ingredient=get_ingredient,
-                amount=ingredient_amount,
+                ingredient=ingredient['id'],
                 recipe=recipe,
+                amount=ingredient['amount']
             )
+
         return recipe
 
     def update(self, instance, validated_data):
         ingredients = validated_data.pop('ingredients')
         tags = validated_data.pop('tags')
-        instance.tags.set(tags)
 
+        IngredientRecipe.objects.filter(recipe=instance).delete()
+
+        for ingredient in ingredients:
+            IngredientRecipe.objects.create(
+                ingredient=ingredient['id'],
+                recipe=instance,
+                amount=ingredient['amount']
+            )
+
+        if validated_data.get('image') is not None:
+            instance.image = validated_data.pop('image')
+
+        instance.tags.set(tags)
         instance.name = validated_data.get('name', instance.name)
         instance.text = validated_data.get('text', instance.text)
         instance.cooking_time = validated_data.get(
             'cooking_time', instance.cooking_time,
         )
-
-        IngredientRecipe.objects.filter(recipe=instance).delete()
-
-        for ingredient in ingredients:
-            current_ingredient, ingredient_amount = ingredient
-            ingredient_id = ingredient[current_ingredient]['id']
-            ingredient_amount = ingredient[ingredient_amount]
-            get_ingredient = Ingredient.objects.get(id=ingredient_id)
-            IngredientRecipe.objects.create(
-                ingredient=get_ingredient,
-                recipe=instance,
-                amount=ingredient_amount,
-            )
-
-        if validated_data.get('image') is not None:
-            instance.image = validated_data.pop('image')
 
         instance.save()
         return instance
