@@ -124,7 +124,7 @@ class PostRecipeSerializer(serializers.ModelSerializer):
             IngredientRecipe.objects.create(
                 ingredient=ingredient['id'],
                 recipe=recipe,
-                amount=ingredient['amount']
+                amount=ingredient['amount'],
             )
 
         return recipe
@@ -139,7 +139,7 @@ class PostRecipeSerializer(serializers.ModelSerializer):
             IngredientRecipe.objects.create(
                 ingredient=ingredient['id'],
                 recipe=instance,
-                amount=ingredient['amount']
+                amount=ingredient['amount'],
             )
 
         if validated_data.get('image') is not None:
