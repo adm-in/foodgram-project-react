@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.db import IntegrityError
 from djoser.views import UserViewSet as DjoserUserViewSet
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes

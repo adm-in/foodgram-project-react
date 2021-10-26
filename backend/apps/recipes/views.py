@@ -1,5 +1,4 @@
 import django_filters.rest_framework
-from django.db import IntegrityError
 from recipes.filters import IngredientFilter, RecipeFilter
 from recipes.models import (Favorite, Ingredient, IngredientRecipe, Purchase,
                             Recipe, Tag)
