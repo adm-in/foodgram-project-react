@@ -7,7 +7,7 @@ from recipes.permissions import AdminOrAuthorOrReadOnly
 from recipes.serializers import (FavoriteSerializer, GetRecipeSerializer,
                                  IngredientSerializer, PostRecipeSerializer,
                                  PurchaseSerializer, TagSerializer)
-from rest_framework import status, viewsets
+from rest_framework import status, viewsets, permissions
 from rest_framework.decorators import (api_view, permission_classes,
                                        renderer_classes)
 from rest_framework.generics import get_object_or_404
@@ -29,9 +29,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
     def get_serializer_class(self):
-        if self.request.method in ('POST', 'PUT', 'PATCH'):
-            return PostRecipeSerializer
-        return GetRecipeSerializer
+        if self.request.method in permissions.SAFE_METHODS:
+            return GetRecipeSerializer
+        return PostRecipeSerializer
 
 
 class TagViewSet(viewsets.ModelViewSet):
