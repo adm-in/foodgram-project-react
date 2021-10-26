@@ -7,7 +7,7 @@ from recipes.permissions import AdminOrAuthorOrReadOnly
 from recipes.serializers import (FavoriteSerializer, GetRecipeSerializer,
                                  IngredientSerializer, PostRecipeSerializer,
                                  PurchaseSerializer, TagSerializer)
-from rest_framework import status, viewsets, permissions
+from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import (api_view, permission_classes,
                                        renderer_classes)
 from rest_framework.generics import get_object_or_404
