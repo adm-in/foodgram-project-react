@@ -21,7 +21,7 @@ class RecipeAdmin(admin.ModelAdmin):
         'author',
         'is_favorited',
     )
-    list_filter = ('name', 'author', 'tags',)
+    list_filter = ('name', 'author', 'tags')
 
     def is_favorited(self, obj):
         return obj.favorite_recipe.count()
@@ -32,7 +32,7 @@ class IngredientAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'name',
-        'measurement_unit'
+        'measurement_unit',
     )
     search_fields = ('name',)
 
@@ -42,7 +42,7 @@ class IngredientRecipeAdmin(admin.ModelAdmin):
         'id',
         'ingredient',
         'recipe',
-        'amount'
+        'amount',
     )
 
 
