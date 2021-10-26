@@ -24,12 +24,11 @@ def subscribe(request, pk):
         qs = User.objects.all()
         user = get_object_or_404(qs, id=pk)
         author_id = request.user.id
-        serializer = SubscribeSerializer(user)
-        try:
-            user_id = User.objects.get(id=pk).id
-            Subscribe.objects.create(author_id=author_id, user_id=user_id)
-        except IntegrityError:
-            print('Вы уже подписаны на этого пользователя')
+        user_id = User.objects.get(id=pk).id
+        Subscribe.objects.create(author_id=author_id, user_id=user_id)
+        serializer = SubscribeSerializer(data=user)
+        if serializer.is_valid():
+            serializer.save()
         return Response(serializer.data)
 
     subscribe_qs = Subscribe.objects.all()

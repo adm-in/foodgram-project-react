@@ -69,21 +69,16 @@ def favorite(request, pk):
     if request.method == 'GET':
         qs = Recipe.objects.all()
         recipe = get_object_or_404(qs, id=pk)
-        serializer = FavoriteSerializer(recipe)
-        try:
-            Favorite.objects.create(user_id=request.user.id, recipe_id=pk)
-            serializer = FavoriteSerializer(data=recipe)
-            if serializer.is_valid():
-                serializer.save()
-            serializer = FavoriteSerializer(recipe)
-        except IntegrityError:
-            print('Рецепт уже добавлен в избранное')
+        Favorite.objects.create(user_id=request.user.id, recipe_id=pk)
+        serializer = FavoriteSerializer(data=recipe)
+        if serializer.is_valid():
+            serializer.save()
         return Response(serializer.data)
 
     favorite_qs = Favorite.objects.all()
     favorite_recipe = get_object_or_404(favorite_qs, recipe_id=pk)
     favorite_recipe.delete()
-    return Response(status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['GET', 'DELETE'])
@@ -92,21 +87,16 @@ def purchase(request, pk):
     if request.method == 'GET':
         qs = Recipe.objects.all()
         recipe = get_object_or_404(qs, id=pk)
-        serializer = PurchaseSerializer(recipe)
-        try:
-            Purchase.objects.create(user_id=request.user.id, recipe_id=pk)
-            serializer = PurchaseSerializer(data=recipe)
-            if serializer.is_valid():
-                serializer.save()
-            serializer = PurchaseSerializer(recipe)
-        except IntegrityError:
-            print('Рецепт уже добавлен в избранное')
+        Purchase.objects.create(user_id=request.user.id, recipe_id=pk)
+        serializer = PurchaseSerializer(data=recipe)
+        if serializer.is_valid():
+            serializer.save()
         return Response(serializer.data)
 
     purchase_qs = Purchase.objects.all()
     purchase_recipe = get_object_or_404(purchase_qs, recipe_id=pk)
     purchase_recipe.delete()
-    return Response(status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class MyUserRenderer(CSVRenderer):
