@@ -107,9 +107,12 @@ class MyUserRenderer(CSVRenderer):
 @permission_classes([IsAuthenticated])
 def export_purchase(request):
     purchases = Purchase.objects.all()
-    queryset = IngredientRecipe.objects.filter(amount='purchases_recipe',)
+    queryset = IngredientRecipe.objects.filter(amount='purchases_recipe')
     content = [
-        {'name': purchase.recipe.name, 'amount': queryset,}
+        {
+         'name': purchase.recipe.name,
+         'amount': queryset
+        }
         for purchase in purchases
     ]
     return Response(content)
