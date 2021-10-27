@@ -99,7 +99,7 @@ def purchase(request, pk):
 
 
 class MyUserRenderer(CSVRenderer):
-    header = ['name', 'cooking_time']
+    header = ['name', 'amount']
 
 
 @api_view(['GET'])
@@ -107,10 +107,15 @@ class MyUserRenderer(CSVRenderer):
 @permission_classes([IsAuthenticated])
 def export_purchase(request):
     purchases = Purchase.objects.all()
+    queryset = IngredientRecipe.objects.filter(
+        amount='purchases_recipe'
+    )
     content = [
         {
+            #'amount': purchase.recipe.amount,
             'name': purchase.recipe.name,
-            'cooking_time': purchase.recipe.cooking_time,
+            'amount': queryset
+            #'measurement_unit': purchase.recipe.measurement_unit,
         }
         for purchase in purchases
     ]
