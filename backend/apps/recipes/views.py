@@ -1,4 +1,5 @@
 import django_filters.rest_framework
+from django.db.models import Avg, Sum
 from recipes.filters import IngredientFilter, RecipeFilter
 from recipes.models import (Favorite, Ingredient, IngredientRecipe, Purchase,
                             Recipe, Tag)
@@ -106,10 +107,22 @@ class MyUserRenderer(CSVRenderer):
 @renderer_classes((MyUserRenderer,))
 @permission_classes([IsAuthenticated])
 def export_purchase(request):
+    recipe = (
+        IngredientRecipe.objects.filter(recipe__purchases__user=request.user)
+        .values('ingredient__name', 'ingredient__measurement_unit',)
+        .annotate(amount=Sum('amount'))
+    )
+    print('RECIPE', recipe)
+    print('END')
     purchases = Purchase.objects.all()
-    queryset = IngredientRecipe.objects.filter(amount='purchases_recipe')
     content = [
-        {'name': purchase.recipe.name, 'amount': queryset}
+        {
+            'name': purchase.recipe.name,
+            'amount': IngredientRecipe.objects.filter(
+                recipe=purchase.recipe.id
+            ),
+        }
         for purchase in purchases
     ]
+    print('CONTENT', content)
     return Response(content)
