@@ -1,5 +1,5 @@
 import django_filters.rest_framework
-from django.db.models import Avg, Sum
+from django.db.models import Sum
 from recipes.filters import IngredientFilter, RecipeFilter
 from recipes.models import (Favorite, Ingredient, IngredientRecipe, Purchase,
                             Recipe, Tag)
@@ -109,13 +109,13 @@ class MyUserRenderer(CSVRenderer):
 def export_purchase(request):
     recipe = (
         IngredientRecipe.objects.filter(recipe__purchases__user=request.user)
-        .values('ingredient__name', 'ingredient__measurement_unit')
-        .annotate(amount=Sum('amount'))
+            .values('ingredient__name', 'ingredient__measurement_unit')
+            .annotate(amount=Sum('amount'))
     )
 
     purchases = Purchase.objects.all()
     content = [
-        {'name': purchase.recipe.name, 'amount': recipe,}
+        {'name': purchase.recipe.name, 'amount': recipe}
         for purchase in purchases
     ]
     return Response(content)
