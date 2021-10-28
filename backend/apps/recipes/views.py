@@ -109,8 +109,8 @@ class MyUserRenderer(CSVRenderer):
 def export_purchase(request):
     recipe = (
         IngredientRecipe.objects.filter(recipe__purchases__user=request.user)
-            .values('ingredient__name', 'ingredient__measurement_unit')
-            .annotate(amount=Sum('amount'))
+        .values('ingredient__name', 'ingredient__measurement_unit')
+        .annotate(amount=Sum('amount'))
     )
 
     purchases = Purchase.objects.all()
