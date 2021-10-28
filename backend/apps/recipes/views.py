@@ -100,22 +100,24 @@ def purchase(request, pk):
 
 
 class MyUserRenderer(CSVRenderer):
-    header = ['name', 'amount']
+    header = ['Название ингредиента', 'Количество', 'Единица измерения']
 
 
 @api_view(['GET'])
 @renderer_classes((MyUserRenderer,))
 @permission_classes([IsAuthenticated])
 def export_purchase(request):
-    recipe = (
+    purchases = (
         IngredientRecipe.objects.filter(recipe__purchases__user=request.user)
         .values('ingredient__name', 'ingredient__measurement_unit')
-        .annotate(amount=Sum('amount'))
+        .annotate(ammount_sum=Sum('amount'))
     )
-
-    purchases = Purchase.objects.all()
     content = [
-        {'name': purchase.recipe.name, 'amount': recipe}
+        {
+            'Название ингредиента': purchase['ingredient__name'],
+            'Количество': purchase['amount_sum'],
+            'Единица измерения': purchase['ingredient__measurement_unit'],
+        }
         for purchase in purchases
     ]
     return Response(content)
