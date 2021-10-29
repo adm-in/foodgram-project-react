@@ -1,6 +1,6 @@
-from distutils.util import strtobool
 import os
 import sys
+from distutils.util import strtobool
 
 from dotenv import load_dotenv
 
