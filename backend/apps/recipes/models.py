@@ -1,5 +1,5 @@
 from django.db import models
-from recipes.validators import cooking_time_validator
+from recipes.validators import amount_validator, cooking_time_validator
 from users.models import CustomUser
 
 
@@ -73,7 +73,9 @@ class IngredientRecipe(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Рецепт',
     )
-    amount = models.CharField(max_length=64, verbose_name='Количество')
+    amount = models.PositiveIntegerField(
+        validators=(amount_validator,), verbose_name='Количество',
+    )
 
     class Meta:
         verbose_name = 'Количество ингредиентов в рецепте'

@@ -110,12 +110,12 @@ def export_purchase(request):
     purchases = (
         IngredientRecipe.objects.filter(recipe__purchases__user=request.user)
         .values('ingredient__name', 'ingredient__measurement_unit')
-        .annotate(ammount_sum=Sum('amount'))
+        .annotate(total_amount=Sum('amount'))
     )
     content = [
         {
             'Название ингредиента': purchase['ingredient__name'],
-            'Количество': purchase['amount_sum'],
+            'Количество': purchase['total_amount'],
             'Единица измерения': purchase['ingredient__measurement_unit'],
         }
         for purchase in purchases

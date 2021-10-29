@@ -6,3 +6,10 @@ def cooking_time_validator(value):
         raise ValidationError(
             f'Время приготовления: {value} указано некорректно.',
         )
+
+
+def amount_validator(value):
+    if value <= 0 or value > 999:
+        raise ValidationError(
+            f'Количество ингредиента: {value} указано некорректно.',
+        )
