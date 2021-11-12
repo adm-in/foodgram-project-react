@@ -70,10 +70,10 @@ class SubscribeSerializer(serializers.ModelSerializer):
     def get_recipes_count(self, recipe):
         return recipe.recipe_set.count()
 
-    def get_recipes(self, user):
+    def get_recipes(self, recipe):
         from recipes.serializers import GetRecipeSerializer
 
-        queryset = Recipe.objects.filter(author=user)[:3]
+        queryset = recipe.recipe_set.all()[:3]
         return GetRecipeSerializer(queryset, many=True).data
 
 
@@ -83,6 +83,6 @@ class SubscriptionsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def to_representation(self, instance):
-        subscriptions = CustomUser.objects.filter(follower=instance)
+        subscriptions = instance.follower.all()
         serializer = SubscribeSerializer(subscriptions, many=True)
         return serializer.data
