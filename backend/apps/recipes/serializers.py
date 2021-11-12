@@ -112,25 +112,33 @@ class PostRecipeSerializer(serializers.ModelSerializer):
             'image',
         )
 
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            ingredients, recipe = func(*args, **kwargs)
+
+            for ingredient in ingredients:
+                current_ingredient, ingredient_amount = ingredient
+                ingredient_id = ingredient[current_ingredient]['id']
+                ingredient_amount = ingredient[ingredient_amount]
+                get_ingredient = Ingredient.objects.get(id=ingredient_id)
+                IngredientRecipe.objects.create(
+                    ingredient=get_ingredient,
+                    amount=ingredient_amount,
+                    recipe=recipe,
+                )
+            return recipe
+        return wrapper
+
+    @decorator
     def create(self, validated_data):
         ingredients = validated_data.pop('ingredients')
         tags = validated_data.pop('tags')
-
         recipe = Recipe.objects.create(**validated_data)
         recipe.tags.set(tags)
 
-        for ingredient in ingredients:
-            current_ingredient, ingredient_amount = ingredient
-            ingredient_id = ingredient[current_ingredient]['id']
-            ingredient_amount = ingredient[ingredient_amount]
-            get_ingredient = Ingredient.objects.get(id=ingredient_id)
-            IngredientRecipe.objects.create(
-                ingredient=get_ingredient,
-                amount=ingredient_amount,
-                recipe=recipe,
-            )
-        return recipe
+        return ingredients, recipe
 
+    @decorator
     def update(self, instance, validated_data):
         ingredients = validated_data.pop('ingredients')
         tags = validated_data.pop('tags')
@@ -144,22 +152,11 @@ class PostRecipeSerializer(serializers.ModelSerializer):
 
         IngredientRecipe.objects.filter(recipe=instance).delete()
 
-        for ingredient in ingredients:
-            current_ingredient, ingredient_amount = ingredient
-            ingredient_id = ingredient[current_ingredient]['id']
-            ingredient_amount = ingredient[ingredient_amount]
-            get_ingredient = Ingredient.objects.get(id=ingredient_id)
-            IngredientRecipe.objects.create(
-                ingredient=get_ingredient,
-                recipe=instance,
-                amount=ingredient_amount,
-            )
-
         if validated_data.get('image') is not None:
             instance.image = validated_data.pop('image')
 
         instance.save()
-        return instance
+        return ingredients, instance
 
     def to_representation(self, instance):
         return GetRecipeSerializer(
