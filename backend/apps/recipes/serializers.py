@@ -112,7 +112,7 @@ class PostRecipeSerializer(serializers.ModelSerializer):
             'image',
         )
 
-    def decorator(func):
+    def decorator(func): # noqa
         def wrapper(*args, **kwargs):
             ingredients, recipe = func(*args, **kwargs)
 
