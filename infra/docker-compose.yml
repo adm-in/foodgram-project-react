@@ -45,3 +45,5 @@ services:
       - ../docs/openapi-schema.yml:/usr/share/nginx/html/api/docs/openapi-schema.yml
       - static_value:/static/
       - media_value:/media/
+    depends_on:
+      - backend
