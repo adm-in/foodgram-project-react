@@ -1,5 +1,5 @@
 # Проект:  Foodgram
-![workflow](https://github.com/adm-in/foodgram-project-react/blob/master/.github/workflows/foodgram_workflow.yaml/badge.svg)
+![workflow](https://github.com/adm-in/foodgram-project-react/actions/workflows/foodgram_workflow.yaml/badge.svg)
 
 # Описание проекта:
 Приложение «Продуктовый помощник»: сайт, на котором пользователи могут публиковать рецепты, добавлять чужие рецепты в избранное и подписываться на публикации других авторов. Сервис «Список покупок» позволит пользователям создавать список продуктов, которые нужно купить для приготовления выбранных блюд. 
