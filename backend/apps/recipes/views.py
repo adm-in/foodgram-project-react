@@ -20,7 +20,7 @@ from rest_framework_csv.renderers import CSVRenderer
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
-    filter_class = RecipeFilter
+    filterset_class = RecipeFilter
     pagination_class = CustomPageNumberPaginator
     permission_classes = [
         AdminOrAuthorOrReadOnly,
