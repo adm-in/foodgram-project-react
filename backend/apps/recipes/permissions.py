@@ -12,7 +12,6 @@ class AdminOrAuthorOrReadOnly(permissions.BasePermission):
                 and not request.user.is_anonymous):
             return (
                 request.user == obj.author
-                or request.user.is_admin
                 or request.user.is_superuser
             )
         return request.method in permissions.SAFE_METHODS
