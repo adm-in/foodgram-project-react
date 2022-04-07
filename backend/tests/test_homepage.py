@@ -1,6 +1,6 @@
 import pytest
 
-from tests.fixtures.fixture_api_client import api_client
+from tests.fixtures.fixture_api_client import api_client # noqa
 
 
 @pytest.mark.django_db()
