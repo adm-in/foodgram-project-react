@@ -1,15 +1,6 @@
 import pytest
 
-# При GET запросе на адрес /api/recipes/ должен выводиться список первых 6
-# рецептов отсортированых по дате побликации. Главная страница доступна всем,
-# в ответ должен приходить 200.
-
-
-@pytest.fixture()
-def api_client():
-    from rest_framework.test import APIClient
-
-    return APIClient()
+from tests.fixtures.fixture_api_client import api_client
 
 
 @pytest.mark.django_db()
