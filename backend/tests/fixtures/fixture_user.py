@@ -4,7 +4,9 @@ import pytest
 @pytest.fixture
 def admin(django_user_model):
     return django_user_model.objects.create_superuser(
-        username='TestUser', email='admin@foodgram.fake', password='Qwerty!123'
+        username='TestUser',
+        email='admin@foodgram.fake',
+        password='Qwerty!123',
     )
 
 
