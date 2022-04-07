@@ -1,7 +1,7 @@
 import pytest
 
 
-@pytest.fixture
+@pytest.fixture()
 def admin(django_user_model):
     return django_user_model.objects.create_superuser(
         username='TestUser',
@@ -10,7 +10,7 @@ def admin(django_user_model):
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def token(admin):
     from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -22,7 +22,7 @@ def token(admin):
     }
 
 
-@pytest.fixture
+@pytest.fixture()
 def user_client(token):
     from rest_framework.test import APIClient
 
