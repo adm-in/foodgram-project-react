@@ -11,6 +11,7 @@ def admin(django_user_model):
 @pytest.fixture
 def token(admin):
     from rest_framework_simplejwt.tokens import RefreshToken
+
     refresh = RefreshToken.for_user(admin)
 
     return {
