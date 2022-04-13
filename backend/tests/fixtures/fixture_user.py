@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-@pytest.fixture
+@pytest.fixture()
 def user():
     return User.objects.create_user(
         username='test_user',
@@ -15,7 +15,7 @@ def user():
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def user_client(user, client):
     client.force_login(user)
     return client
