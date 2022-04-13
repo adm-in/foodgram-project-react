@@ -1,31 +1,21 @@
 import pytest
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
-@pytest.fixture()
-def admin(django_user_model):
-    return django_user_model.objects.create_superuser(
-        username='TestUser',
-        email='admin@foodgram.fake',
-        password='Qwerty!123',
+@pytest.fixture
+def user():
+    return User.objects.create_user(
+        username='test_user',
+        password='!Qwerty123',
+        email='test@gmail.com',
+        first_name='Test',
+        last_name='Testov',
     )
 
 
-@pytest.fixture()
-def token(admin):
-    from rest_framework_simplejwt.tokens import RefreshToken
-
-    refresh = RefreshToken.for_user(admin)
-
-    return {
-        'refresh': str(refresh),
-        'access': str(refresh.access_token),
-    }
-
-
-@pytest.fixture()
-def user_client(token):
-    from rest_framework.test import APIClient
-
-    client = APIClient()
-    client.credentials(HTTP_AUTHORIZATION=f'Bearer {token["access"]}')
+@pytest.fixture
+def user_client(user, client):
+    client.force_login(user)
     return client
