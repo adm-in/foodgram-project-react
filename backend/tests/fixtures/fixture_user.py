@@ -24,7 +24,7 @@ def foodgram_token(foodgram_user):
 
 
 @pytest.fixture()
-def foodgram_client(foodgram_token):
+def foodgram_client():
     from rest_framework.test import APIClient
 
     return APIClient()
