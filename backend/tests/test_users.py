@@ -26,5 +26,12 @@ class TestUserLoginLogout:
 
         data = response.data
 
+        assert data['username'] == self.user_dict['username']
+        assert data['email'] == self.user_dict['email']
         assert data['first_name'] == self.user_dict['first_name']
-        assert response.status_code == 201
+        assert data['last_name'] == self.user_dict['last_name']
+
+        assert response.status_code == 201, (
+            f'Проверьте, что при POST запросе`{self.url_register}` '
+            'возвращается статус 201'
+        )
