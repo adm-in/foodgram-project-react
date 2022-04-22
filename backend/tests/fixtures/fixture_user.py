@@ -15,7 +15,7 @@ def foodgram_user():
     )
 
 
-@pytest.fixture
+@pytest.fixture()
 def foodgram_token(foodgram_user):
     from rest_framework.authtoken.models import Token
 
@@ -23,7 +23,7 @@ def foodgram_token(foodgram_user):
     return Token.objects.get(user=foodgram_user)
 
 
-@pytest.fixture
+@pytest.fixture()
 def foodgram_client(foodgram_token):
     from rest_framework.test import APIClient
 
@@ -31,7 +31,7 @@ def foodgram_client(foodgram_token):
     return client
 
 
-@pytest.fixture
+@pytest.fixture()
 def foodgram_client_auth(foodgram_token):
     from rest_framework.test import APIClient
 

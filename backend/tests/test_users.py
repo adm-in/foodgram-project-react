@@ -16,11 +16,11 @@ class TestUserLoginLogout:
 
     @pytest.mark.django_db(transaction=True)
     def test_registration(self, foodgram_user, foodgram_client):
-        assert 'test_user' == foodgram_user.username
+        assert foodgram_user.username == 'test_user'
         assert foodgram_user.check_password('!Qwerty123')
-        assert 'test@gmail.com' == foodgram_user.email
-        assert 'Test' == foodgram_user.first_name
-        assert 'Testov' == foodgram_user.last_name
+        assert foodgram_user.email == 'test@gmail.com'
+        assert foodgram_user.first_name == 'Test'
+        assert foodgram_user.last_name == 'Testov'
 
         response = foodgram_client.post(self.url_register, self.user_dict)
 
