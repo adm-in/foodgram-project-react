@@ -33,5 +33,5 @@ class TestUserLoginLogout:
 
         assert response.status_code == 201, (
             f'Проверьте, что при POST запросе`{self.url_register}` '
-            'возвращается статус 201'
+            'возвращается статус 201 '
         )
