@@ -1,4 +1,7 @@
 import pytest
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class TestUserLoginLogout:
@@ -16,20 +19,17 @@ class TestUserLoginLogout:
 
     @pytest.mark.django_db(transaction=True)
     def test_registration(self, foodgram_user, foodgram_client):
+        user = User.objects.filter(username='test_user').first()
+
         assert foodgram_user.username == 'test_user'
         assert foodgram_user.check_password('!Qwerty123')
         assert foodgram_user.email == 'test@gmail.com'
         assert foodgram_user.first_name == 'Test'
         assert foodgram_user.last_name == 'Testov'
+        assert User.objects.count() == 1
+        assert isinstance(user, User)
 
         response = foodgram_client.post(self.url_register, self.user_dict)
-
-        data = response.data
-
-        assert data['username'] == self.user_dict['username']
-        assert data['email'] == self.user_dict['email']
-        assert data['first_name'] == self.user_dict['first_name']
-        assert data['last_name'] == self.user_dict['last_name']
 
         assert response.status_code == 201, (
             f'Проверьте, что при POST запросе`{self.url_register}` '
