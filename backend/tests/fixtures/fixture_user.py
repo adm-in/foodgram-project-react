@@ -16,6 +16,17 @@ def foodgram_user():
 
 
 @pytest.fixture()
+def foodgram_user2():
+    return User.objects.create_user(
+        username='ivan',
+        password='!Qwerty321!',
+        email='ivan@mail.ru',
+        first_name='Vanya',
+        last_name='Ivanov',
+    )
+
+
+@pytest.fixture()
 def foodgram_token(foodgram_user):
     from rest_framework.authtoken.models import Token
 
@@ -37,3 +48,8 @@ def foodgram_client_auth(foodgram_token):
     client = APIClient()
     client.credentials(HTTP_AUTHORIZATION='Token ' + foodgram_token.key)
     return client
+
+
+@pytest.fixture()
+def first_user():
+    return User.objects.filter(username='test_user').first()
