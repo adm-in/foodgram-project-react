@@ -62,7 +62,7 @@ class TestUsers:
             dict(current_password='!Qwerty123', new_password='!!123Qwerty?'),
         )
         user = User.objects.filter(username=foodgram_user.username).first()
-        print(response)
+
         assert response.status_code == 204, (
             f'Проверьте, что при POST запросе`{self.url_change_pass}` '
             'возвращается статус 204'
