@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-class TestUsers:
+class TestUsersAuth:
     url_register = '/api/auth/users/'
     url_login = '/api/auth/token/login/'
     url_logout = '/api/auth/token/logout/'
