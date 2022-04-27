@@ -20,20 +20,26 @@ class TestUsersAuth:
 
     @pytest.mark.django_db(transaction=True)
     def test_registration(self, foodgram_user, first_user, foodgram_client):
+        response = foodgram_client.post(self.url_register, self.user_dict)
+
         assert foodgram_user.username == first_user.username
         assert foodgram_user.check_password('!Qwerty123')
         assert foodgram_user.email == first_user.email
         assert foodgram_user.first_name == first_user.first_name
         assert foodgram_user.last_name == first_user.last_name
-        assert User.objects.count() == 1
         assert isinstance(first_user, User)
 
-        response = foodgram_client.post(self.url_register, self.user_dict)
+        assert response.status_code != 400, (
+            f'Проверьте, что при POST запросе`{self.url_register}` '
+            'не возвращается статус 400. Обязательное поле не заполнено!'
+        )
 
         assert response.status_code == 201, (
             f'Проверьте, что при POST запросе`{self.url_register}` '
             'возвращается статус 201 '
         )
+
+        assert User.objects.count() == 2
 
     @pytest.mark.django_db(transaction=True)
     def test_login(self, foodgram_user, foodgram_client):
@@ -50,6 +56,11 @@ class TestUsersAuth:
     @pytest.mark.django_db(transaction=True)
     def test_logout(self, foodgram_client_auth):
         response = foodgram_client_auth.post(self.url_logout)
+
+        assert response.status_code != 403, (
+            f'Проверьте, что при POST запросе`{self.url_logout}` '
+            'не возвращается статус 403. Учетные данные не были предоставлены!'
+        )
         assert response.status_code == 204, (
             f'Проверьте, что при POST запросе`{self.url_logout}` '
             'возвращается статус 204 '
@@ -63,12 +74,22 @@ class TestUsersAuth:
         )
         user = User.objects.filter(username=foodgram_user.username).first()
 
+        assert response.status_code != 400, (
+            f'Проверьте, что при POST запросе`{self.url_change_pass}` '
+            'не возвращается статус 400. Обязательное поле не заполнено!'
+        )
+
+        assert response.status_code != 403, (
+            f'Проверьте, что при POST запросе`{self.url_change_pass}` '
+            'не возвращается статус 403. Учетные данные не были предоставлены!'
+        )
+
         assert response.status_code == 204, (
             f'Проверьте, что при POST запросе`{self.url_change_pass}` '
             'возвращается статус 204'
         )
 
         assert user.check_password('!!123Qwerty?'), (
-            f'Проверьте, что при POST запросе`{self.url_change_pass}` '
+            f'Убедитесь, что при POST запросе`{self.url_change_pass}` '
             'меняется пароль'
         )
