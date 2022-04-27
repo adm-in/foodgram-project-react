@@ -36,7 +36,7 @@ class TestUsersAuth:
 
         assert response.status_code == 201, (
             f'Проверьте, что при POST запросе`{self.url_register}` '
-            'возвращается статус 201 '
+            'возвращается статус 201'
         )
 
         assert User.objects.count() == 2
@@ -50,7 +50,7 @@ class TestUsersAuth:
 
         assert response.status_code == 200, (
             f'Проверьте, что при POST запросе`{self.url_login}` '
-            'возвращается статус 200 '
+            'возвращается статус 200'
         )
 
     @pytest.mark.django_db(transaction=True)
@@ -63,7 +63,7 @@ class TestUsersAuth:
         )
         assert response.status_code == 204, (
             f'Проверьте, что при POST запросе`{self.url_logout}` '
-            'возвращается статус 204 '
+            'возвращается статус 204'
         )
 
     @pytest.mark.django_db(transaction=True)
