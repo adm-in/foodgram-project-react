@@ -18,11 +18,11 @@ class TestUsers:
     )
 
     @pytest.mark.django_db(transaction=True)
-    def test_get_user(self,):
+    def test_get_user(self):
         pass
 
     @pytest.mark.django_db(transaction=True)
-    def test_get_users(self,):
+    def test_get_users(self):
         pass
 
     @pytest.mark.django_db(transaction=True)
