@@ -20,7 +20,7 @@ class TestUsers:
 
     @pytest.mark.django_db(transaction=True)
     def test_get_user(
-        self, foodgram_user, foodgram_user2, foodgram_client_auth
+        self, foodgram_user, foodgram_user2, foodgram_client_auth,
     ):
         user_1 = foodgram_client_auth.get(self.url_user_1)
 
