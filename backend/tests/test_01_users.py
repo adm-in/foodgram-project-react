@@ -39,32 +39,32 @@ class TestUsers:
         assert foodgram_user2.last_name == user_2.data['last_name']
 
         assert user_1.status_code != 403, (
-            f'Проверьте, что при POST запросе`{self.url_user_1}` '
+            f'Проверьте, что при GET запросе`{self.url_user_1}` '
             'не возвращается статус 403. Учетные данные не были предоставлены!'
         )
 
         assert user_2.status_code != 403, (
-            f'Проверьте, что при POST запросе`{self.url_user_2}` '
+            f'Проверьте, что при GET запросе`{self.url_user_2}` '
             'не возвращается статус 403. Учетные данные не были предоставлены!'
         )
 
         assert user_1.status_code != 404, (
-            f'Проверьте, что при POST запросе`{self.url_user_1}` '
+            f'Проверьте, что при GET запросе`{self.url_user_1}` '
             'не возвращается статус 404. Страница не найдена!'
         )
 
         assert user_2.status_code != 404, (
-            f'Проверьте, что при POST запросе`{self.url_user_2}` '
+            f'Проверьте, что при GET запросе`{self.url_user_2}` '
             'не возвращается статус 404. Страница не найдена!'
         )
 
         assert user_1.status_code == 200, (
-            f'Проверьте, что при POST запросе`{self.url_user_1}` '
+            f'Проверьте, что при GET запросе`{self.url_user_1}` '
             'возвращается статус 200'
         )
 
         assert user_2.status_code == 200, (
-            f'Проверьте, что при POST запросе`{self.url_user_2}` '
+            f'Проверьте, что при GET запросе`{self.url_user_2}` '
             'возвращается статус 200'
         )
 
