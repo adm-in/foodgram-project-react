@@ -69,9 +69,8 @@ class TestUsers:
         )
 
     @pytest.mark.django_db(transaction=True)
-    def test_get_users(self, foodgram_client_auth):
-
-        response = foodgram_client_auth.get(self.url_users)
+    def test_get_users(self, client, users_list):
+        response = client.get(self.url_users)
 
         assert response.status_code == 200, (
             f'Проверьте, что при GET запросе`{self.url_users}` '

@@ -53,3 +53,20 @@ def foodgram_client_auth(foodgram_token):
 @pytest.fixture()
 def first_user():
     return User.objects.filter(username='test_user').first()
+
+
+@pytest.fixture()
+def users_list():
+    result = []
+    for id in range(10):
+        data = {
+            'username': f'TestUser{id}',
+            'email': f'testuser{id}@foodgram.test',
+            'id': id,
+            'password': '1234567',
+            'first_name': f'user{id}',
+            'last_name': f'user{id}',
+        }
+        result.append(data)
+        User.objects.create_user(**data)
+    return result

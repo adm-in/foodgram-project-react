@@ -12,7 +12,7 @@ User = get_user_model()
 
 
 class UserViewSet(DjoserUserViewSet):
-    queryset = User.objects.all()
+    queryset = User.objects.all().order_by('id')
     serializer_class = CustomUserSerializer
 
 
