@@ -12,8 +12,10 @@ User = get_user_model()
 
 
 class UserViewSet(DjoserUserViewSet):
-    queryset = User.objects.all().order_by('id')
     serializer_class = CustomUserSerializer
+
+    def get_queryset(self):
+        return User.objects.all().order_by('id')
 
 
 @api_view(['GET', 'DELETE'])
