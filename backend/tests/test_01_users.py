@@ -72,6 +72,11 @@ class TestUsers:
     def test_get_users(self, client, users_list):
         response = client.get(self.url_users)
 
+        assert response.data['count'] == 10, (
+            f'Проверьте, что при GET запросе на`{self.url_users}` '
+            'возвращается нужное количество пользователей'
+        )
+
         assert response.status_code == 200, (
             f'Проверьте, что при GET запросе`{self.url_users}` '
             'возвращается статус 200'
