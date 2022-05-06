@@ -3,7 +3,7 @@ import pytest
 
 @pytest.fixture()
 def tags_list():
-    from backend.apps.recipes.models import Tag
+    from recipes.models import Tag
 
     data = [
         {'id': 1, 'name': 'Завтрак', 'slug': 'breakfast', 'color': '#E26C2D'},
