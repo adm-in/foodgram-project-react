@@ -1,0 +1,42 @@
+import pytest
+
+
+class TestIngredients:
+    @pytest.mark.django_db(transaction=True)
+    def test_ingredient_list(self, ingredients_list):
+        ingredient_1 = ingredients_list[0]
+        ingredient_2 = ingredients_list[1]
+        ingredient_3 = ingredients_list[2]
+
+        assert (
+            ingredient_1['id'] == 1
+        ), f'Проверьте, что id ингредиента созадется правильно'
+
+        assert (
+            ingredient_1['name'] == 'сок'
+        ), f'Проверьте, что имя ингредиента созадется правильно'
+        assert (
+            ingredient_1['measurement_unit'] == 'л'
+        ), f'Проверьте, что единица измерения ингредиента созадется правильно'
+
+        assert (
+            ingredient_2['id'] == 2
+        ), f'Проверьте, что id ингредиента созадется правильно'
+
+        assert (
+            ingredient_2['name'] == 'огурцы'
+        ), f'Проверьте, что имя ингредиента созадется правильно'
+        assert (
+            ingredient_2['measurement_unit'] == 'кг'
+        ), f'Проверьте, что единица измерения ингредиента созадется правильно'
+
+        assert (
+            ingredient_3['id'] == 3
+        ), f'Проверьте, что id ингредиента созадется правильно'
+
+        assert (
+            ingredient_3['name'] == 'сахар'
+        ), f'Проверьте, что имя ингредиента созадется правильно'
+        assert (
+            ingredient_3['measurement_unit'] == 'гр'
+        ), f'Проверьте, что единица измерения ингредиента созадется правильно'
