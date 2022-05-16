@@ -15,6 +15,7 @@ class TestIngredients:
         assert (
             ingredient_1['name'] == 'сок'
         ), 'Проверьте, что имя ингредиента создается правильно.'
+
         assert (
             ingredient_1['measurement_unit'] == 'л'
         ), 'Проверьте, что единица измерения ингредиента создается правильно.'
@@ -26,6 +27,7 @@ class TestIngredients:
         assert (
             ingredient_2['name'] == 'огурцы'
         ), 'Проверьте, что имя ингредиента создается правильно.'
+
         assert (
             ingredient_2['measurement_unit'] == 'кг'
         ), 'Проверьте, что единица измерения ингредиента создается правильно.'
@@ -37,6 +39,7 @@ class TestIngredients:
         assert (
             ingredient_3['name'] == 'сахар'
         ), 'Проверьте, что имя ингредиента создается правильно.'
+
         assert (
             ingredient_3['measurement_unit'] == 'гр'
         ), 'Проверьте, что единица измерения ингредиента создается правильно.'
