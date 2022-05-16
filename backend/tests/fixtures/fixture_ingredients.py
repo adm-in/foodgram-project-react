@@ -13,6 +13,6 @@ def ingredients_list():
     for ingredient in data:
         id, name, measurement_unit = ingredient.values()
         Ingredient.objects.create(
-            id=id, name=name, measurement_unit=measurement_unit
+            id=id, name=name, measurement_unit=measurement_unit,
         )
     return data
